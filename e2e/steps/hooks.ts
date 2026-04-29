@@ -7,7 +7,7 @@ let page: Page;
 setDefaultTimeout(60 * 1000);
 
 Before(async function () {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: process.env.CI ? true : false });
     const context = await browser.newContext();
     page = await context.newPage();
     this.page = page;
