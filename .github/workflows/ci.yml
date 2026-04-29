@@ -1,37 +1,37 @@
 name: QA Automation Pipeline
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+    push:
+        branches: [ "main", "master" ]
+    pull_request:
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
+    tests:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: 📥 Checkout do código
-        uses: actions/checkout@v4
+        steps:
+            - name: 📥 Checkout do código
+              uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
-      - name: 📦 Instalar dependências
-        run: npm install
+            - name: 📦 Instalar dependências
+              run: npm install
 
-      - name: 🎭 Instalar browsers do Playwright
-        run: npx playwright install --with-deps
+            - name: 🎭 Instalar browsers do Playwright
+              run: npx playwright install --with-deps
 
-      - name: 🧪 Rodar testes E2E + gerar JSON
-        run: npm run test:e2e
+            - name: 🧪 Rodar testes E2E + gerar JSON
+              run: npm run test:e2e
 
-      - name: 📊 Gerar relatório HTML
-        run: npm run report
+            - name: 📊 Gerar relatório HTML
+              run: npm run report
 
-      - name: 📁 Upload do relatório
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-report
-          path: reports/
+            - name: 📁 Upload do relatório
+              uses: actions/upload-artifact@v4
+              with:
+                  name: cucumber-report
+                  path: reports/
