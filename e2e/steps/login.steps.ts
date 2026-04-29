@@ -8,14 +8,7 @@ let browser: Browser;
 let loginPage: LoginPage;
 
 Given('que estou na página de login', async function () {
-  browser = await chromium.launch({
-    headless: false,
-    slowMo: 100
-  });
-  const context = await browser.newContext();
-  this.page = await context.newPage();
   loginPage = new LoginPage(this.page);
-
   await loginPage.navigate();
 });
 
