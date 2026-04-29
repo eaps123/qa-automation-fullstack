@@ -163,7 +163,15 @@ Pipeline configurado com **GitHub Actions**, responsável por:
 * Disponibilizar artefatos para download
 
 📍 Acesse na aba **Actions** do repositório
+
+---
+
+## 📊 Status do Projeto
+
 ![CI](https://github.com/eaps123/qa-automation-fullstack/actions/workflows/ci.yml/badge.svg)
+
+🔗 Relatório de testes:
+https://eaps123.github.io/qa-automation-fullstack/
 
 ---
 
