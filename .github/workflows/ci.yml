@@ -1,64 +1,100 @@
 name: QA Automation CI
 
 on:
-    push:
-        branches: [ "main", "master" ]
-    pull_request:
-    workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-    tests:
-        runs-on: ubuntu-latest
+  tests:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: 📥 Checkout do código
-              uses: actions/checkout@v4
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
 
-            - name: 🟢 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-            - name: 📦 Instalar dependências
-              run: npm install
+      - name: 📦 Instalar dependências
+        run: npm install
 
-            - name: 🎭 Instalar browsers do Playwright
-              run: npx playwright install --with-deps
-            
-            - name: ⚙️ Rodar testes API
-              run: npm run test:api
+      - name: 🎭 Instalar browsers do Playwright
+        run: npx playwright install --with-deps
 
-            - name: 🧪 Rodar testes E2E + gerar JSON
-              run: npm run test:e2e
-            - name: 📈 Run K6 tests
-              run: npm run test:performance
+      # =========================
+      # API TESTS
+      # =========================
+      - name: ⚙️ Rodar testes API
+        run: npm run test:api
 
-            - name: 📊 Gerar relatório HTML
-              if: always()
-              run: npm run report
+      # =========================
+      # E2E TESTS
+      # =========================
+      - name: 🧪 Rodar testes E2E
+        run: npm run test:e2e
 
-            - name: 📁 Upload do relatório
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: cucumber-report
-                  path: reports/cucumber-report.html
-            - name: Upload evidências
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                    name: evidencias
-                    path: |
-                      reports/
-                      test-results/
-            - name: Upload K6 report
-              if: always()
-              uses: actions/upload-artifact@v4
-              with:
-                    name: k6-report
-                    path: reports/
-            - name: Deploy relatório no GitHub Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./reports
+      # =========================
+      # PERFORMANCE (K6)
+      # =========================
+      - name: 🚀 Run K6 tests
+        run: |
+          curl -s https://dl.k6.io/key.gpg | sudo apt-key add -
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+          k6 run performance/load-test.js --summary-export=reports/k6-summary.json
+
+      # =========================
+      # REPORTS
+      # =========================
+      - name: 📊 Gerar relatório HTML
+        if: always()
+        run: npm run report
+
+      # =========================
+      # ARTIFACTS
+      # =========================
+      - name: 📁 Upload relatório HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: reports/cucumber-report.html
+
+      - name: 📁 Upload evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias
+          path: |
+            reports/
+            test-results/
+
+      - name: 📈 Upload K6 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-report
+          path: reports/k6-summary.json
+
+  # =========================
+  # DEPLOY GH PAGES
+  # =========================
+  deploy:
+    needs: tests
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy relatório no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports
