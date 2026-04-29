@@ -1,3 +1,5 @@
 node_modules/
-reports/
 test-results/
+reports/*.json
+reports/*.html
+!reports/generate-report.js
