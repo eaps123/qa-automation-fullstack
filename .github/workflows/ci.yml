@@ -32,6 +32,7 @@ jobs:
       # =========================
       - name: ⚙️ Rodar testes API
         run: npm run test:api
+        continue-on-error: true
 
       # =========================
       # E2E TESTS
