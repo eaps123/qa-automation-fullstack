@@ -23,5 +23,6 @@ Then('devo ver a página de produtos', async function () {
 
 Then('devo ver uma mensagem de erro', async function () {
   const error = loginPage.getError();
+  await error.waitFor();
   expect(await error.isVisible()).toBe(true);
 });
