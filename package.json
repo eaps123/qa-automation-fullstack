@@ -8,7 +8,8 @@
     "test:api": "playwright test api-tests",
     "test:e2e": "cucumber-js e2e/features --require-module ts-node/register --require e2e/steps/**/*.ts --format json:reports/cucumber-report.json",
     "report": "node reports/generate-report.js",
-    "test:full": "npm run test:e2e && npm run report"
+    "test:full": "npm run test:e2e && npm run report",
+    "test:performance": "k6 run performance/load-test.js"
   },
   "keywords": [],
   "author": "",
