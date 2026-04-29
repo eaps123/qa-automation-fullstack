@@ -1,10 +1,7 @@
-import { chromium, expect, Browser, Page } from '@playwright/test';
+import { expect } from '../support/expect';
 import { LoginPage } from '../pages/LoginPage';
-import { Given, When, Then, setDefaultTimeout } from '@cucumber/cucumber';
+import { Given, When, Then } from '@cucumber/cucumber';
 
-setDefaultTimeout(60 * 1000); // 60 segundos
-
-let browser: Browser;
 let loginPage: LoginPage;
 
 Given('que estou na página de login', async function () {
@@ -20,13 +17,11 @@ When('eu faço login com senha inválida', async function () {
   await loginPage.login('standard_user', 'wrong_password');
 });
 
-Then('devo ver a página de produtos', async function ()  {
+Then('devo ver a página de produtos', async function () {
   await expect(this.page).toHaveURL(/inventory/);
-  await browser.close();
 });
 
 Then('devo ver uma mensagem de erro', async function () {
   const error = loginPage.getError();
-  await expect(error).toBeTruthy();
-  await browser.close();
+  expect(await error.isVisible()).toBe(true);
 });

@@ -20,7 +20,7 @@ export class LoginPage {
         await this.page.fill(this.password, pass);
         await this.page.click(this.loginBtn);
     }
-    async getError() {
-        return this.page.locator(this.error);
+    getError() {
+        return this.page.locator('.error-message');
     }
 }
