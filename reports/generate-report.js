@@ -1,4 +1,11 @@
 const reporter = require('cucumber-html-reporter');
+const fs = require('fs');
+const reportsPath = 'reports/cucumber-report.json';
+
+if (!fs.existsSync(reportsPath)) {
+  console.log('⚠️ Report JSON não encontrado, pulando geração de HTML');
+  process.exit(0);
+}
 
 const options = {
   theme: 'bootstrap',

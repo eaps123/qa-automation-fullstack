@@ -24,6 +24,8 @@ jobs:
 
       - name: 🎭 Instalar browsers do Playwright
         run: npx playwright install --with-deps
+      - name: 📁 Criar pasta reports
+        run: mkdir -p reports
 
       # =========================
       # API TESTS
