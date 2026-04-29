@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:api": "playwright test api-tests",
+    "test:api": "playwright test api",
     "test:e2e": "cucumber-js e2e/features --require-module ts-node/register --require e2e/steps/**/*.ts --format json:reports/cucumber-report.json",
     "report": "node reports/generate-report.js",
     "test:full": "npm run test:e2e && npm run report",
