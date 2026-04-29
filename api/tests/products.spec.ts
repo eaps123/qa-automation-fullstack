@@ -1,4 +1,88 @@
-import { test, expect, request } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { ApiClient } from '../services/apiClient';
+import { ProductService } from '../services/ProductService';
+import { AuthService } from '../services/AuthService';
+import { CepService } from '../services/CepService';
+import { CartService } from '../services/CartService';
+
+test.describe('API - Unified Layer', () => {
+
+  let client: ApiClient;
+  let productService: ProductService;
+  let authService: AuthService;
+  let cepService: CepService;
+  let cartService: CartService;
+
+  test.beforeAll(async () => {
+    client = new ApiClient();
+    await client.init();
+  
+    productService = new ProductService(client);
+    cartService = new CartService(client);
+    authService = new AuthService(client);
+    cepService = new CepService(client);
+  });
+
+  test('GET - Deve retornar lista de produtos', async () => {
+    const response = await productService.getProducts();
+
+    expect([200, 201, 202]).toContain(response.status());
+
+    const body = await response.json();
+    expect(body.length).toBeGreaterThan(0);
+  });
+
+  test('POST - Deve criar um carrinho', async () => {
+    const payload = {
+      userId: 1,
+      date: '2024-01-01',
+      products: [{ productId: 1, quantity: 2 }]
+    };
+  
+    const response = await cartService.createCart(payload);
+  
+    expect([200, 201, 202]).toContain(response.status());
+  
+    const body = await response.json();
+    expect(body).toHaveProperty('id');
+  });
+
+  test('POST - API mock aceita payload inválido', async () => {
+    const response = await cartService.createCart({});
+  
+    expect([200, 201, 202]).toContain(response.status());
+  });
+
+  test('POST - Login inválido deve falhar', async () => {
+    const response = await authService.login({
+      email: 'peter@klaven'
+    });
+
+    expect([400, 401, 404]).toContain(response.status());
+
+    const body = await response.json();
+    expect(body).toHaveProperty('error');
+  });
+
+  test('GET - Deve buscar CEP válido', async () => {
+    const response = await cepService.getCep('01001000');
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body).toHaveProperty('city');
+    expect(body).toHaveProperty('state');
+  });
+
+  test('GET - CEP inválido deve retornar erro', async () => {
+    const response = await cepService.getCep('00000000');
+
+    expect([400, 401, 404]).toContain(response.status());
+  });
+
+});
+
+/*import { test, expect, request } from '@playwright/test';
 
 test.describe('API - Products', () => {
 
@@ -83,4 +167,4 @@ test.describe('API - Products', () => {
     expect([400, 401, 404]).toContain(response.status());
   });
 
-});
+});*/
