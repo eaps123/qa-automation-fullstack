@@ -1,0 +1,30 @@
+name: QA Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Instalar browsers do Playwright
+        run: npx playwright install
+
+      - name: Rodar testes API + E2E
+        run: npx playwright test
+
+      - name: Gerar relatório
+        run: npx playwright show-report
