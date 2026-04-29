@@ -68,14 +68,17 @@ jobs:
           name: cucumber-report
           path: reports/cucumber-report.html
 
-      - name: 📁 Upload evidências
-        if: always()
+      - name: 📁 Upload reports
         uses: actions/upload-artifact@v4
         with:
-          name: evidencias
-          path: |
-            reports/
-            test-results/
+          name: reports
+          path: reports/
+        
+      - name: 📁 Upload evidências
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
 
       - name: 📈 Upload K6 report
         if: always()
@@ -96,13 +99,22 @@ jobs:
       contents: write
 
     steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
 
-      - name: Deploy relatório no GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./reports
-          force_orphan: true
+    - name: 📥 Download reports
+      uses: actions/download-artifact@v4
+      with:
+        name: reports
+        path: reports
+
+    - name: 📂 Listar arquivos
+      run: ls -R reports
+
+    - name: 🚀 Deploy no GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./reports
+        force_orphan: true

@@ -10,7 +10,7 @@ if (!fs.existsSync(reportsPath)) {
 const options = {
   theme: 'bootstrap',
   jsonFile: 'reports/cucumber-report.json',
-  output: 'reports/cucumber-report.html',
+  output: 'reports/index.html',
   reportSuiteAsScenarios: true,
   launchReport: false,
   metadata: {
