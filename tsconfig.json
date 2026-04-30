@@ -1,8 +1,10 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "ES6",
-      "types": ["node"],
-      "esModuleInterop": true
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6",
+    "types": [
+      "node"
+    ],
+    "esModuleInterop": true
   }
+}
