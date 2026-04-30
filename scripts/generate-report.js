@@ -1,5 +1,6 @@
 const reporter = require('cucumber-html-reporter');
 const fs = require('fs');
+
 const reportsPath = 'reports/cucumber-report.json';
 
 if (!fs.existsSync(reportsPath)) {
@@ -10,16 +11,17 @@ if (!fs.existsSync(reportsPath)) {
 const options = {
   theme: 'bootstrap',
   jsonFile: 'reports/cucumber-report.json',
-  output: 'reports/index.html',
+  output: 'reports/cucumber-report.html',
   reportSuiteAsScenarios: true,
   launchReport: false,
   metadata: {
-    "Project": "QA Automation Challenge",
-    "Environment": "CI",
-    "Browser": "Chromium",
-    "Platform": "Linux",
-    "Execution": "GitHub Actions"
+    Project: 'QA Automation Challenge',
+    Environment: 'CI',
+    Browser: 'Chromium',
+    Platform: 'Linux',
+    Execution: 'GitHub Actions'
   }
 };
 
 reporter.generate(options);
+console.log('✅ Cucumber report gerado com sucesso');
