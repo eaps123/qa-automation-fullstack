@@ -88,6 +88,7 @@ jobs:
           path: reports/k6-summary.json
       - name: 🧱 Criar dashboard index.html
         run: |
+            mkdir -p reports
             echo '<!DOCTYPE html>
             <html>
             <head><title>QA Automation</title></head>
@@ -98,6 +99,10 @@ jobs:
             <a href="./k6-summary.json">K6</a>
             </body>
             </html>' > reports/index.html
+      - name: 📂 Debug reports
+        run: |
+              echo "Conteúdo da pasta reports:"
+              ls -R reports
 
   # =========================
   # DEPLOY GH PAGES
@@ -129,4 +134,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: ./reports
-        force_orphan: true
+        force_orphan: false
