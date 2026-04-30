@@ -86,6 +86,22 @@ jobs:
         with:
           name: k6-report
           path: reports/k6-summary.json
+      - name: 🧱 Garantir dashboard index.html
+        run: |
+            if [ ! -f reports/index.html ]; then
+              echo "Criando index.html padrão..."
+              cat <<EOF > reports/index.html
+              <!DOCTYPE html>
+              <html>
+              <body>
+              <h1>QA Automation Reports</h1>
+              <a href="./cucumber-report.html">Cucumber</a><br>
+              <a href="./playwright-report/index.html">Playwright</a><br>
+              <a href="./k6-summary.json">K6</a>
+              </body>
+              </html>
+              EOF
+              fi
 
   # =========================
   # DEPLOY GH PAGES
