@@ -1,0 +1,32 @@
+{
+  "name": "qa-automation-fullstack",
+  "version": "1.0.0",
+  "description": "📖 Descrição do projeto\r 🏗️ Estrutura de pastas\r ⚙️ Como rodar\r 📊 Como ver relatórios\r 🔄 Pipeline",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test api",
+    "test:e2e": "cucumber-js e2e/features --require-module ts-node/register --require e2e/steps/**/*.ts --format json:reports/cucumber-report.json",
+    "report": "node scripts/generate-report.js",
+    "test:full": "npm run test:e2e && npm run report",
+    "test:performance": "k6 run performance/load-test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@cucumber/cucumber": "^12.8.2",
+    "@faker-js/faker": "^10.4.0",
+    "@playwright/test": "^1.59.1",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
+    "expect": "^30.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "cucumber-html-reporter": "^7.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
