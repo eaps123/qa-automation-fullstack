@@ -85,20 +85,28 @@ jobs:
           echo "</pre></body></html>" >> reports/k6-report.html
       - name: 📄 Criar index de screenshots
         run: |
-          echo "<h1>Screenshots</h1><ul>" > reports/screenshots/index.html
+          echo "<h1>📸 Screenshots</h1>" > reports/screenshots/index.html
+      
           for file in reports/screenshots/*.png; do
             name=$(basename "$file")
-            echo "<li><a href=\"$name\">$name</a></li>" >> reports/screenshots/index.html
+            echo "<div style='margin-bottom:20px'>
+                    <p>$name</p>
+                    <img src=\"$name\" style='width:400px;border-radius:8px'/>
+                  </div>" >> reports/screenshots/index.html
           done
-          echo "</ul>" >> reports/screenshots/index.html
       - name: 📄 Criar index de vídeos
         run: |
-          echo "<h1>Videos</h1><ul>" > reports/videos/index.html
+          echo "<h1>🎥 Videos</h1>" > reports/videos/index.html
+      
           for file in reports/videos/*.webm; do
             name=$(basename "$file")
-            echo "<li><a href=\"$name\">$name</a></li>" >> reports/videos/index.html
+            echo "<div style='margin-bottom:20px'>
+                    <p>$name</p>
+                    <video controls width='400'>
+                      <source src=\"$name\" type='video/webm'>
+                    </video>
+                  </div>" >> reports/videos/index.html
           done
-          echo "</ul>" >> reports/videos/index.html
       # =========================
       # DASHBOARD
       # =========================
