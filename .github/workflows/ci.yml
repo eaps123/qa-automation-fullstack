@@ -53,7 +53,9 @@ jobs:
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
           sudo apt-get update
           sudo apt-get install -y k6
-          k6 run performance/load-test.js --summary-export=reports/k6-summary.json
+          k6 run performance/load-test.js \
+            --summary-export=reports/k6-summary.json \
+            --log-output=reports/k6-log.txt
 
       # =========================
       # REPORTS
@@ -61,6 +63,18 @@ jobs:
       - name: 📊 Gerar relatório HTML
         if: always()
         run: npm run report
+      - name: 📊 Criar K6 HTML report
+        run: |
+          cat << 'EOF' > reports/k6-report.html
+          <html>
+          <body>
+          <h1>⚡ K6 Summary</h1>
+          <pre>
+          EOF
+      
+          cat reports/k6-summary.json >> reports/k6-report.html
+      
+          echo "</pre></body></html>" >> reports/k6-report.html
 
       # =========================
       # DASHBOARD

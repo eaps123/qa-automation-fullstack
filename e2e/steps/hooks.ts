@@ -10,53 +10,32 @@ let page: Page;
 setDefaultTimeout(60 * 1000);
 
 Before(async function () {
-  browser = await chromium.launch({
-    headless: process.env.CI ? true : false
-  });
-  context = await browser.newContext({
-    recordVideo: {
-      dir: 'reports/videos/',
-      size: { width: 1280, height: 720 }
-    }
-  });
-  page = await context.newPage();
-  this.page = page;
+    browser = await chromium.launch({ headless: process.env.CI ? true : false });
+    const context = await browser.newContext({
+        recordVideo: {
+            dir: 'reports/videos/',
+            size: { width: 1280, height: 720 }
+        }
+    });
+    page = await context.newPage();
+    this.page = page;
+    this.context = context;
 });
 
 After(async function (scenario) {
-  const scenarioName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
-  const timestamp = Date.now();
-  // Screenshot (falha)
-  if (scenario.result?.status === Status.FAILED) {
-    const screenshotPath = `reports/screenshots/${scenarioName}_${timestamp}.png`;
+    const safeName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
     const screenshot = await this.page.screenshot({
-      path: screenshotPath,
-      fullPage: true
+        path: `reports/screenshots/${safeName}.png`,
+        fullPage: true
     });
-    await this.attach(screenshot, 'image/png');
-  }
+    this.attach(screenshot, 'image/png');
 
-  // Logs estruturados
-  const log = {
-    scenario: scenario.pickle.name,
-    status: scenario.result?.status,
-    url: this.page.url(),
-    timestamp: new Date().toISOString()
-  };
-
-  await this.attach(JSON.stringify(log, null, 2), 'application/json');
-  // Vídeo
-  const video = this.page.video();
-
-  if (video) {
-    const videoPath = await video.path();
-    // garante que o arquivo existe antes de anexar
-    if (fs.existsSync(videoPath)) {
-      const videoBuffer = fs.readFileSync(videoPath);
-      await this.attach(videoBuffer, 'video/webm');
+    const video = this.page.video();
+    if (video) {
+        const videoPath = `reports/videos/${safeName}.webm`;
+        await video.saveAs(videoPath);
     }
-  }
 
-  await context.close();
-  await browser.close();
+    await this.context.close();
+    await browser.close();
 });
