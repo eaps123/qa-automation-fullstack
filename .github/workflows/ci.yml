@@ -102,47 +102,135 @@ jobs:
       # =========================
       # DASHBOARD
       # =========================
-      - name: 🧱 Criar dashboard index.html
+      - name: 🧱 Criar dashboard dinâmico
         run: |
           mkdir -p reports
 
-          echo '<!DOCTYPE html>
-          <html>
+          cat << 'EOF' > reports/index.html
+          <!DOCTYPE html>
+          <html lang="pt-br">
           <head>
-            <title>QA Automation</title>
-            <style>
-              body { font-family: Arial; }
-              img { width: 300px; margin: 10px; }
-              video { width: 300px; margin: 10px; }
-            </style>
+              <meta charset="UTF-8">
+              <title>QA Dashboard</title>
+
+              <style>
+                  body {
+                      font-family: Arial;
+                      background: #0f172a;
+                      color: #fff;
+                      padding: 20px;
+                  }
+
+                  h1 { text-align: center; }
+
+                  .grid {
+                      display: grid;
+                      grid-template-columns: repeat(4, 1fr);
+                      gap: 20px;
+                      margin-top: 20px;
+                  }
+
+                  .card {
+                      background: #1e293b;
+                      padding: 20px;
+                      border-radius: 10px;
+                      text-align: center;
+                  }
+
+                  .green { color: #22c55e; }
+                  .red { color: #ef4444; }
+                  .yellow { color: #eab308; }
+
+                  a {
+                      color: #38bdf8;
+                      display: block;
+                      margin-top: 10px;
+                  }
+              </style>
           </head>
+
           <body>
 
-            <h1>🚀 QA Automation Reports</h1>
+              <h1>📊 QA Automation Dashboard</h1>
 
-            <h2>📊 Relatórios</h2>
-            <a href="./cucumber-report.html">🥒 Cucumber</a><br>
-            <a href="./playwright-report/index.html">🎭 Playwright</a><br>
-            <a href="./k6-report.html">⚡ K6</a><br>
+              <div class="grid">
+                  <div class="card"><h2 id="total">-</h2><p>Total Cenários</p></div>
+                  <div class="card"><h2 id="passed" class="green">-</h2><p>Passaram</p></div>
+                  <div class="card"><h2 id="failed" class="red">-</h2><p>Falharam</p></div>
+                  <div class="card"><h2 id="passRate" class="yellow">-</h2><p>Pass Rate</p></div>
+              </div>
 
-            <h2>📸 Screenshots</h2>
-          ' > reports/index.html
+              <div class="grid">
+                  <div class="card"><h2 id="avgDuration">-</h2><p>Tempo Médio (ms)</p></div>
+                  <div class="card"><h2 id="k6Avg">-</h2><p>K6 Avg Response</p></div>
+                  <div class="card"><h2 id="k6P95">-</h2><p>K6 P95</p></div>
+                  <div class="card"><h2 id="k6FailRate">-</h2><p>K6 Fail Rate</p></div>
+              </div>
 
-          # adicionar screenshots
-          for file in reports/screenshots/*.png; do
-            name=$(basename "$file")
-            echo "<div><p>$name</p><img src=\"screenshots/$name\" /></div>" >> reports/index.html
-          done
+              <div class="card">
+                  <h3>🔗 Links</h3>
+                  <a href="./cucumber-report.html">📊 Cucumber</a>
+                  <a href="./k6-report.html">⚡ K6</a>
+                  <a href="./playwright-report/index.html">🎭 Playwright</a>
+              </div>
 
-          echo '<h2>🎥 Videos</h2>' >> reports/index.html
+              <script>
+                  async function loadCucumber() {
+                      const res = await fetch('./cucumber-report.json');
+                      const data = await res.json();
 
-          # adicionar vídeos
-          for file in reports/videos/*.webm; do
-            name=$(basename "$file")
-            echo "<div><p>$name</p><video controls src=\"videos/$name\"></video></div>" >> reports/index.html
-          done
+                      let total = 0, passed = 0, failed = 0, durations = [];
 
-          echo '</body></html>' >> reports/index.html
+                      data.forEach(feature => {
+                          feature.elements.forEach(scenario => {
+                              total++;
+
+                              const steps = scenario.steps;
+                              const isFailed = steps.some(s => s.result.status === 'failed');
+
+                              if (isFailed) failed++;
+                              else passed++;
+
+                              const duration = steps.reduce((acc, s) => acc + (s.result.duration || 0), 0);
+                              durations.push(duration);
+                          });
+                      });
+
+                      const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
+
+                      document.getElementById('total').innerText = total;
+                      document.getElementById('passed').innerText = passed;
+                      document.getElementById('failed').innerText = failed;
+                      document.getElementById('passRate').innerText = ((passed / total) * 100).toFixed(1) + '%';
+                      document.getElementById('avgDuration').innerText = avg.toFixed(0);
+                  }
+
+                  async function loadK6() {
+                      try {
+                          const res = await fetch('./k6-summary.json');
+                          const data = await res.json();
+
+                          document.getElementById('k6Avg').innerText =
+                              data.metrics.http_req_duration.avg.toFixed(0) + ' ms';
+
+                          document.getElementById('k6P95').innerText =
+                              data.metrics.http_req_duration["p(95)"].toFixed(0) + ' ms';
+
+                          document.getElementById('k6FailRate').innerText =
+                              (data.metrics.http_req_failed.rate * 100).toFixed(2) + '%';
+
+                      } catch {
+                          console.log('K6 não encontrado');
+                      }
+                  }
+
+                  loadCucumber();
+                  loadK6();
+              </script>
+
+          </body>
+          </html>
+          EOF
       - name: 📂 Debug reports
         run: |
           echo "Conteúdo da pasta reports:"
