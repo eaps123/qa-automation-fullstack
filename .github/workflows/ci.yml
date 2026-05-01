@@ -104,28 +104,45 @@ jobs:
       # =========================
       - name: 🧱 Criar dashboard index.html
         run: |
-          cat << 'EOF' > reports/index.html
-          <!DOCTYPE html>
+          mkdir -p reports
+
+          echo '<!DOCTYPE html>
           <html>
           <head>
             <title>QA Automation</title>
             <style>
-              body { font-family: Arial; background: #0f172a; color: #fff; padding: 20px; }
-              a { color: #38bdf8; display: block; margin: 8px 0; }
+              body { font-family: Arial; }
+              img { width: 300px; margin: 10px; }
+              video { width: 300px; margin: 10px; }
             </style>
           </head>
           <body>
-            <h1>🚀 QA Automation Reports</h1>
-            <a href="./dashboard.html">📊 Dashboard</a>
-            <a href="./cucumber-report.html">🥒 Cucumber</a>
-            <a href="./playwright-report/index.html">🎭 Playwright</a>
-            <a href="./k6-summary.json">⚡ K6</a>
-            <a href="./videos/">🎥 Videos</a>
-            <a href="./screenshots/">📸 Screenshots</a>
-          </body>
-          </html>
-          EOF
 
+            <h1>🚀 QA Automation Reports</h1>
+
+            <h2>📊 Relatórios</h2>
+            <a href="./cucumber-report.html">🥒 Cucumber</a><br>
+            <a href="./playwright-report/index.html">🎭 Playwright</a><br>
+            <a href="./k6-report.html">⚡ K6</a><br>
+
+            <h2>📸 Screenshots</h2>
+          ' > reports/index.html
+
+          # adicionar screenshots
+          for file in reports/screenshots/*.png; do
+            name=$(basename "$file")
+            echo "<div><p>$name</p><img src=\"screenshots/$name\" /></div>" >> reports/index.html
+          done
+
+          echo '<h2>🎥 Videos</h2>' >> reports/index.html
+
+          # adicionar vídeos
+          for file in reports/videos/*.webm; do
+            name=$(basename "$file")
+            echo "<div><p>$name</p><video controls src=\"videos/$name\"></video></div>" >> reports/index.html
+          done
+
+          echo '</body></html>' >> reports/index.html
       - name: 📂 Debug reports
         run: |
           echo "Conteúdo da pasta reports:"
@@ -149,8 +166,6 @@ jobs:
   deploy:
     needs: tests
     runs-on: ubuntu-latest
-    if: always()
-
     permissions:
       contents: write
 
@@ -158,20 +173,27 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: 📥 Download reports
-        if: always()
+      - name: 🧹 Limpar workspace
+        run: rm -rf reports test-results
+
+      - name: 📥 Download artifact
         uses: actions/download-artifact@v4
         with:
           name: qa-reports-${{ github.run_id }}
-          path: reports
+          path: .
 
-      - name: 📂 Listar arquivos
-        run: ls -R reports
+      - name: 🔧 Ajustar estrutura
+        run: |
+          mv reports/* .
+          rm -rf reports
 
-      - name: 🚀 Deploy no GitHub Pages
+      - name: 🔍 Debug final
+        run: ls -R
+
+      - name: 🚀 Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./reports
-          force_orphan: false
+          publish_dir: .
+          force_orphan: true
