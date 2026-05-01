@@ -65,54 +65,36 @@ jobs:
       # =========================
       # ARTIFACTS
       # =========================
-      - name: 📁 Upload relatório HTML
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-report
-          path: reports/cucumber-report.html
-
-      - name: 📁 Upload reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports
-          path: reports/
-        
-      - name: 📁 Upload evidências
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results/
-      - name: 📁 Upload reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports
-          path: reports/
-
-      - name: 📈 Upload K6 report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: k6-report
-          path: reports/k6-summary.json
       - name: 🧱 Criar dashboard index.html
         run: |
-            mkdir -p reports
-            echo '<!DOCTYPE html>
-            <html>
-            <head><title>QA Automation</title></head>
-            <body>
+          mkdir -p reports
+          cat << 'EOF' > reports/index.html
+          <!DOCTYPE html>
+          <html>
+          <head><title>QA Automation</title></head>
+          <body>
             <h1>🚀 QA Automation Reports</h1>
-            <a href="./cucumber-report.html">Cucumber</a><br>
-            <a href="./playwright-report/index.html">Playwright</a><br>
-            <a href="./k6-summary.json">K6</a>
-            </body>
-            </html>' > reports/index.html
+            <a href="./dashboard.html">📊 Dashboard</a><br>
+            <a href="./cucumber-report.html">🥒 Cucumber</a><br>
+            <a href="./playwright-report/index.html">🎭 Playwright</a><br>
+            <a href="./k6-summary.json">⚡ K6</a><br>
+            <a href="./videos/">🎥 Videos</a><br>
+            <a href="./screenshots/">📸 Screenshots</a>
+          </body>
+          </html>
+          EOF
       - name: 📂 Debug reports
         run: |
-              echo "Conteúdo da pasta reports:"
-              ls -R reports
-
+          echo "Conteúdo da pasta reports:"
+          ls -R reports
+      - name: 📁 Upload artifacts (all-in-one)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-reports-${{ github.run_id }}
+          path: |
+            reports/
+            test-results/
   # =========================
   # DEPLOY GH PAGES
   # =========================
