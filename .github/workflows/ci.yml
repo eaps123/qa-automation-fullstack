@@ -30,6 +30,10 @@ jobs:
           mkdir -p reports
           mkdir -p reports/screenshots
           mkdir -p reports/videos
+      - name: Garantir arquivos de evidência
+        run: |
+          touch reports/videos/.keep
+          touch reports/screenshots/.keep
 
       # =========================
       # API TESTS
