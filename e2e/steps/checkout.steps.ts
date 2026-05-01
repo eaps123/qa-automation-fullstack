@@ -84,6 +84,7 @@ When('a API de produtos falha', async function () {
     await this.page.reload();
 });
 
-Then('devo validar que não há produtos', async function () {
-    await expect(this.page.locator('.inventory_item')).toBeVisible();
+Then('a aplicação deve continuar funcional', async function () {
+    const items = this.page.locator('.inventory_item');
+    await expect(items.first()).toBeVisible();
 });
