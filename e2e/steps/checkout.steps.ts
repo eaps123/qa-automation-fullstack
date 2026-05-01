@@ -73,3 +73,17 @@ Then('o carrinho deve refletir a quantidade correta', async function () {
   const badge = this.page.locator('.shopping_cart_badge');
   await expect(badge).toHaveText('2');
 });
+
+When('a API de produtos falha', async function () {
+    await this.page.route('**/inventory*', route => {
+        route.fulfill({
+            status: 500,
+            body: 'Internal Server Error'
+        });
+    });
+});
+
+Then('devo ver uma mensagem de erro amigável', async function () {
+    const error = this.page.locator('[data-test="error"]');
+    await expect(error).toBeVisible();
+});

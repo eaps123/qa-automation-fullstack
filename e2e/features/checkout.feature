@@ -27,7 +27,7 @@ Feature: Checkout
   
   Scenario: adiciono o produto {string} {int} vezes
     Given que estou logado na aplicação
-    When adiciono o mesmo produto duas vezes
+    When adiciono o produto "sauce-labs-backpack" 2 vezes
     Then o carrinho deve refletir a quantidade correta
 
   Scenario: Sistema deve lidar com falha na API de produtos

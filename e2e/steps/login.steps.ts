@@ -53,3 +53,7 @@ When('faço logout', async function () {
 When('realizo login novamente', async function () {
   await loginPage.login('standard_user', 'secret_sauce');
 });
+
+Then('devo ser redirecionado para login', async function () {
+  await expect(this.page).toHaveURL(/login/);
+});
