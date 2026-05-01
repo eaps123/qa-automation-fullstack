@@ -31,25 +31,19 @@ Before(async function () {
 
 After(async function (scenario) {
     try {
-      const safeName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
-  
-      const screenshot = await this.page.screenshot({
-        path: `reports/screenshots/${safeName}.png`,
-        fullPage: true
-      });
-  
-      this.attach(screenshot, 'image/png');
-  
-      const video = this.page.video();
-      if (video) {
-        const videoPath = `reports/videos/${safeName}.webm`;
-        await video.saveAs(videoPath);
-      }
-  
-    } catch (error) {
-      console.error('Erro no After:', error);
+        const safeName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
+
+        const screenshot = await this.page.screenshot({
+            path: `reports/screenshots/${safeName}.png`,
+            fullPage: true
+        });
+
+        this.attach(screenshot, 'image/png');
+
+    } catch (err) {
+        console.error(err);
     } finally {
-      await this.context?.close();
-      await browser?.close();
+        await this.context?.close();
+        await browser?.close();
     }
-  });
+});
