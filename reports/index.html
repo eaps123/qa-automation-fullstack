@@ -159,7 +159,8 @@
                 console.log('K6 não encontrado');
             }
         }
-
+        fetch('./k6-summary.json').then(r => r.json()).then(data => console.log(data))
+        
         loadCucumber();
         loadK6();
     </script>
