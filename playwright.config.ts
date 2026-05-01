@@ -1,6 +1,6 @@
 reporter: [
-    ['html', {
-      outputFolder: 'reports/playwright-report',
-      open: 'never'
-    }]
-  ]
+  ['html', {
+    outputFolder: 'reports/playwright-report',
+    open: 'never'
+  }]
+]

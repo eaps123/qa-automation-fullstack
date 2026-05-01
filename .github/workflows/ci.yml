@@ -57,6 +57,9 @@ jobs:
       - name: 📊 Gerar relatório HTML
         if: always()
         run: npm run report
+      - name: 🎭 Gerar Playwright HTML report
+        if: always()
+        run: npx playwright show-report
 
       # =========================
       # ARTIFACTS
