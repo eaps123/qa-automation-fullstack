@@ -1,8 +1,12 @@
-import { expect } from '../support/expect';
-import { LoginPage } from '../pages/LoginPage';
 import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 
 let loginPage: LoginPage;
+let inventoryPage: InventoryPage;
+let checkoutPage: CheckoutPage;
 
 Given('que estou na página de login', async function () {
   loginPage = new LoginPage(this.page);
@@ -25,4 +29,27 @@ Then('devo ver uma mensagem de erro', async function () {
   const error = loginPage.getError();
   await error.waitFor();
   expect(await error.isVisible()).toBe(true);
+});
+
+Given('que estou logado na aplicação', async function () {
+  loginPage = new LoginPage(this.page);
+  await loginPage.navigate();
+  await loginPage.login('standard_user', 'secret_sauce');
+
+  inventoryPage = new InventoryPage(this.page);
+  checkoutPage = new CheckoutPage(this.page);
+});
+
+Given('que não estou logado', async function () {
+  loginPage = new LoginPage(this.page);
+  await loginPage.navigate();
+});
+
+When('faço logout', async function () {
+  await inventoryPage.openMenu();
+  await inventoryPage.logout();
+});
+
+When('realizo login novamente', async function () {
+  await loginPage.login('standard_user', 'secret_sauce');
 });

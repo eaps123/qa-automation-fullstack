@@ -13,3 +13,24 @@ Feature: Checkout
     And vou para o carrinho
     And tento finalizar a compra sem preencher dados
     Then devo ver uma mensagem de erro no checkout
+  
+  Scenario: Usuário tenta acessar checkout sem estar logado
+    Given que não estou logado
+    When tento acessar a página de checkout
+    Then devo ser redirecionado para login
+  
+  Scenario: Não deve permitir finalizar compra com carrinho vazio
+    Given que estou logado na aplicação
+    When vou para o carrinho sem produtos
+    And tento finalizar a compra
+    Then devo ver uma mensagem de carrinho vazio
+  
+  Scenario: adiciono o produto {string} {int} vezes
+    Given que estou logado na aplicação
+    When adiciono o mesmo produto duas vezes
+    Then o carrinho deve refletir a quantidade correta
+
+  Scenario: Sistema deve lidar com falha na API de produtos
+    Given que estou logado na aplicação
+    When a API de produtos falha
+    Then devo ver uma mensagem de erro amigável
