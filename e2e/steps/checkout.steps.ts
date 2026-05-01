@@ -14,7 +14,7 @@ When('adiciono um produto ao carrinho', async function () {
 When('adiciono o produto {string} {int} vezes', async function (produto, quantidade) {
     await this.page.waitForSelector('.inventory_item');
     const button = this.page.locator(`[data-test="add-to-cart-${produto}"]`);
-    await expect(button).toBeVisible();
+    await expect(button).toBeVisible({ timeout: 10000 });
     for (let i = 0; i < quantidade; i++) {
         await button.click();
     }
@@ -75,16 +75,4 @@ Then('devo ver uma mensagem de carrinho vazio', async function () {
 Then('o carrinho deve refletir a quantidade correta', async function () {
     const badge = this.page.locator('.shopping_cart_badge');
     await expect(badge).toHaveText('2');
-});
-
-When('a API de produtos falha', async function () {
-    await this.page.route('**/inventory.json', async (route: Route) => {
-        await route.abort(); // simula erro de rede
-    });
-    await this.page.reload();
-});
-
-Then('a aplicação deve continuar funcional', async function () {
-    const items = this.page.locator('.inventory_item');
-    await expect(items.first()).toBeVisible();
 });

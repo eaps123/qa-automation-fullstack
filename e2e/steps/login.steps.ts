@@ -35,6 +35,8 @@ Given('que estou logado na aplicação', async function () {
   loginPage = new LoginPage(this.page);
   await loginPage.navigate();
   await loginPage.login('standard_user', 'secret_sauce');
+  await expect(this.page).toHaveURL(/inventory/);
+  await this.page.waitForSelector('.inventory_item');
 
   inventoryPage = new InventoryPage(this.page);
   checkoutPage = new CheckoutPage(this.page);

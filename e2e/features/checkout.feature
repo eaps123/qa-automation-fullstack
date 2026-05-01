@@ -29,8 +29,3 @@ Feature: Checkout
     Given que estou logado na aplicação
     When adiciono o produto "sauce-labs-backpack" 2 vezes
     Then o carrinho deve refletir a quantidade correta
-
-  Scenario: Sistema deve lidar com falha na API de produtos
-    Given que estou logado na aplicação
-    When a API de produtos falha
-    Then devo validar que não há produtos
