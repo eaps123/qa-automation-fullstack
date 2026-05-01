@@ -1,6 +1,24 @@
+## 📊 Status do Projeto
+
+![CI](https://github.com/eaps123/qa-automation-fullstack/actions/workflows/ci.yml/badge.svg)
+
+---
+
 # 🧪 QA Automation Challenge
 
 Projeto de automação de testes cobrindo **API, E2E e testes de carga**, com foco em boas práticas, organização e simulação de um ambiente real de QA.
+
+---
+
+## 📌 Objetivo
+
+Demonstrar habilidades em QA Automation com foco em:
+
+-   Testes E2E com Playwright + Cucumber
+-   Testes de API
+-   Testes de performance com K6
+-   Integração contínua (GitHub Actions)
+-   Geração de relatórios e evidências (screenshots e vídeos)
 
 ---
 
@@ -33,17 +51,24 @@ A estratégia adotada separa responsabilidades por tipo de teste:
 ```bash
 qa-automation-fullstack/
 ├── api/                  # Testes de API
+│   ├── factories/
+│   ├── services/
 │   └── tests/
 │
 ├── e2e/                  # Testes End-to-End (BDD)
 │   ├── features/
+│   ├── pages/
 │   ├── steps/
-│   └── pages/
+│   └── support/
 │
 ├── performance/          # Testes de carga (K6)
 │   └── load-test.js
 │
 ├── reports/              # Relatórios gerados
+│   ├── screenshots/
+│   └── videos/
+│
+├── scripts/              # Script utilizados para o reports
 │
 ├── .github/workflows/    # CI/CD (GitHub Actions)
 │
@@ -70,11 +95,14 @@ qa-automation-fullstack/
 
 * ✔️ Login com sucesso
 * ✔️ Login inválido
+* ✔️ Login após logout
 
 #### 🛒 Checkout
 
 * ✔️ Fluxo completo de compra
-* ✔️ Validação de erros em formulário
+* ✔️ Checkout com dados inválidos
+* ✔️ Usuário não logado acessando checkout
+* ✔️ Carrinho vazio
 
 ---
 
@@ -88,90 +116,108 @@ qa-automation-fullstack/
 
 ## ⚙️ Tecnologias Utilizadas
 
-* Playwright (API + E2E)
-* Cucumber (BDD)
-* K6 (Performance)
-* TypeScript
-* GitHub Actions (CI/CD)
-* Cucumber HTML Reporter
+-   Node.js
+-   TypeScript
+-   Playwright
+-   Cucumber (BDD)
+-   K6 (Performance)
+-   GitHub Actions (CI/CD)
+-   Cucumber HTML Reporter
 
 ---
 
-## ▶️ Como Executar
+## ▶️ Como executar o projeto
 
-### 📦 Instalar dependências
+### 1. Clonar repositório
 
-```bash
+git clone https://github.com/eaps123/qa-automation-fullstack cd
+qa-automation-fullstack
+
+---
+
+### 2. Instalar dependências
+
 npm install
-```
+
 ---
 
-### 🧪 Rodar testes de API + E2E
+### 3. Instalar browsers do Playwright
 
-```bash
-npx playwright test
-```
-ou (BDD completo):
-```bash
+npx playwright install
+
+---
+
+## 🧪 Execução dos testes
+
+### ✔️ Testes E2E
+
 npm run test:e2e
-```
+
 ---
 
-### 📊 Gerar relatório HTML
+### ✔️ Testes de API
 
-```bash
+npm run test:api
+
+---
+
+### ✔️ Testes de Performance (K6)
+
+npm run test:performance
+
+---
+
+### ✔️ Gerar relatórios
+
 npm run report
-```
+
 ---
 
-### 🚀 Executar fluxo completo
+## 📊 Relatórios e evidências
 
-```bash
-npm run test:full
-```
+Após a execução, os relatórios são gerados em:
+
+/reports
+
+Incluindo:
+
+-   📊 Cucumber report
+-   ⚡ K6 report
+-   📸 Screenshots automáticos por cenário
+-   🎥 Vídeos de execução
+
 ---
 
-### ⚡ Executar teste de carga
+## 🌐 Dashboard online
 
-```bash
-k6 run performance/load-test.js
-```
----
+Acesse o dashboard completo com resultados:
 
-## 📊 Relatórios
-
-Os relatórios são gerados automaticamente após a execução:
-
-```bash
-reports/cucumber-report.html
-```
-
-### ✔️ O que o relatório inclui:
-
-* Status dos cenários
-* Steps detalhados
-* Screenshots em falhas
+https://eaps123.github.io/qa-automation-fullstack/
 
 ---
 
 ## ⚙️ CI/CD
 
-Pipeline configurado com **GitHub Actions**, responsável por:
+Pipeline automatizado com **GitHub Actions**, responsável por:
 
-* Executar testes automaticamente a cada push
-* Gerar relatório HTML
-* Disponibilizar artefatos para download
+1.  Testes de API
+2.  Testes E2E
+3.  Testes de performance (K6)
+4.  Geração de relatórios
+5.  Deploy automático no GitHub Pages
 
 📍 Acesse na aba **Actions** do repositório
 
 ---
 
-## 📊 Status do Projeto
+## 🎯 Diferenciais do projeto
 
-![CI](https://github.com/eaps123/qa-automation-fullstack/actions/workflows/ci.yml/badge.svg)
-
-🔗 Relatório de testes:
-https://eaps123.github.io/qa-automation-fullstack/
+-   🔁 Pipeline completo (E2E + API + Performance)
+-   📊 Dashboard customizado com métricas
+-   📸 Evidências automáticas (screenshots e vídeos)
+-   🧪 BDD com Cucumber
+-   ⚡ Testes de performance integrados
+-   🚀 Deploy automático
 
 ---
 
@@ -195,6 +241,10 @@ O projeto foi estruturado com foco em:
 * legibilidade
 * organização
 * simulação de cenário real de automação
+
+E o projeto utiliza a aplicação pública de testes:
+
+https://www.saucedemo.com/
 
 ---
 ## Autor
