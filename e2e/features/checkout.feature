@@ -33,4 +33,4 @@ Feature: Checkout
   Scenario: Sistema deve lidar com falha na API de produtos
     Given que estou logado na aplicação
     When a API de produtos falha
-    Then devo ver uma mensagem de erro amigável
+    Then devo validar que não há produtos

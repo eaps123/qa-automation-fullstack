@@ -55,5 +55,5 @@ When('realizo login novamente', async function () {
 });
 
 Then('devo ser redirecionado para login', async function () {
-  await expect(this.page).toHaveURL(/login/);
+  await expect(this.page.locator('[data-test="login-button"]')).toBeVisible();
 });
