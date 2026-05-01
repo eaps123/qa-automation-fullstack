@@ -248,5 +248,5 @@ https://www.saucedemo.com/
 
 ---
 ## Autor
-Everton Alves Pedro
-QA Engineer | Automação de Testes
+- Everton Alves Pedro
+- QA Engineer | Automação de Testes
