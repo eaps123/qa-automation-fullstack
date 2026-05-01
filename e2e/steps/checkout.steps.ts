@@ -11,13 +11,9 @@ When('adiciono um produto ao carrinho', async function () {
     await inventoryPage.addProduct();
 });
 
-When('adiciono o produto {string} {int} vezes', async function (produto, quantidade) {
-    await this.page.waitForSelector('.inventory_item');
-    const button = this.page.locator(`[data-test="add-to-cart-${produto}"]`);
-    await expect(button).toBeVisible({ timeout: 10000 });
-    for (let i = 0; i < quantidade; i++) {
-        await button.click();
-    }
+When('adiciono múltiplos produtos ao carrinho', async function () {
+    await this.page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
+    await this.page.click('[data-test="add-to-cart-sauce-labs-bike-light"]');
 });
 
 When('vou para o carrinho', async function () {

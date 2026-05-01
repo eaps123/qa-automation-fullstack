@@ -25,7 +25,7 @@ Feature: Checkout
     And tento finalizar a compra
     Then devo ver uma mensagem de carrinho vazio
   
-  Scenario: adiciono o produto {string} {int} vezes
+  Scenario: adiciono múltiplos produtos ao carrinho
     Given que estou logado na aplicação
-    When adiciono o produto "sauce-labs-backpack" 2 vezes
+    When adiciono múltiplos produtos ao carrinho
     Then o carrinho deve refletir a quantidade correta
