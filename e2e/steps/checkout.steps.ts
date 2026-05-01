@@ -1,5 +1,5 @@
 import { When, Then } from '@cucumber/cucumber';
-import { expect } from '@playwright/test';
+import { expect, Route } from '@playwright/test';
 import { CheckoutPage } from '../pages/CheckoutPage';
 import { InventoryPage } from '../pages/InventoryPage';
 
@@ -7,80 +7,78 @@ let checkoutPage: CheckoutPage;
 let inventoryPage: InventoryPage;
 
 When('adiciono um produto ao carrinho', async function () {
-  inventoryPage = new InventoryPage(this.page);
-  await inventoryPage.addProduct();
+    inventoryPage = new InventoryPage(this.page);
+    await inventoryPage.addProduct();
 });
 
 When('adiciono o produto {string} {int} vezes', async function (produto, quantidade) {
-  for (let i = 0; i < quantidade; i++) {
-    await this.page.click(`[data-test="add-${produto}"]`);
-  }
+    for (let i = 0; i < quantidade; i++) {
+        await this.page.click(`[data-test="add-${produto}"]`);
+    }
 });
 
 When('vou para o carrinho', async function () {
-  inventoryPage = new InventoryPage(this.page);
-  await inventoryPage.goToCart();
+    inventoryPage = new InventoryPage(this.page);
+    await inventoryPage.goToCart();
 });
 
 When('vou para o carrinho sem produtos', async function () {
-  inventoryPage = new InventoryPage(this.page);
-  await inventoryPage.goToCart();
+    inventoryPage = new InventoryPage(this.page);
+    await inventoryPage.goToCart();
 });
 
 When('finalizo a compra com dados válidos', async function () {
-  checkoutPage = new CheckoutPage(this.page);
+    checkoutPage = new CheckoutPage(this.page);
 
-  await checkoutPage.startCheckout();
-  await checkoutPage.fillForm();
-  await checkoutPage.continue();
-  await checkoutPage.finish();
+    await checkoutPage.startCheckout();
+    await checkoutPage.fillForm();
+    await checkoutPage.continue();
+    await checkoutPage.finish();
 });
 
 When('tento finalizar a compra', async function () {
-  checkoutPage = new CheckoutPage(this.page);
+    checkoutPage = new CheckoutPage(this.page);
 
-  await checkoutPage.startCheckout();
-  await checkoutPage.continue();
+    await checkoutPage.startCheckout();
+    await checkoutPage.continue();
 });
 
 When('tento finalizar a compra sem preencher dados', async function () {
-  checkoutPage = new CheckoutPage(this.page);
+    checkoutPage = new CheckoutPage(this.page);
 
-  await checkoutPage.startCheckout();
-  await checkoutPage.continue();
+    await checkoutPage.startCheckout();
+    await checkoutPage.continue();
 });
 
 When('tento acessar a página de checkout', async function () {
-  await this.page.goto('https://www.saucedemo.com/checkout-step-one.html');
+    await this.page.goto('https://www.saucedemo.com/checkout-step-one.html');
 });
 
 Then('devo ver a confirmação de compra', async function () {
-  const success = await new CheckoutPage(this.page).getSuccessMessage();
-  await expect(success).toBeVisible();
+    const success = await new CheckoutPage(this.page).getSuccessMessage();
+    await expect(success).toBeVisible();
 });
 
 Then('devo ver uma mensagem de erro no checkout', async function () {
-  const error = await new CheckoutPage(this.page).getErrorMessage();
-  await expect(error).toBeVisible();
+    const error = await new CheckoutPage(this.page).getErrorMessage();
+    await expect(error).toBeVisible();
 });
 
 Then('devo ver uma mensagem de carrinho vazio', async function () {
-  const error = await new CheckoutPage(this.page).getErrorMessage();
-  await expect(error).toBeVisible();
+    const error = await new CheckoutPage(this.page).getErrorMessage();
+    await expect(error).toBeVisible();
 });
 
 Then('o carrinho deve refletir a quantidade correta', async function () {
-  const badge = this.page.locator('.shopping_cart_badge');
-  await expect(badge).toHaveText('2');
+    const badge = this.page.locator('.shopping_cart_badge');
+    await expect(badge).toHaveText('2');
 });
 
 When('a API de produtos falha', async function () {
-    await this.page.route('**/inventory*', route => {
-        route.fulfill({
-            status: 500,
-            body: 'Internal Server Error'
-        });
+    await this.page.route('**/inventory.json', async (route: Route) => {
+        await route.abort(); // simula erro de rede
     });
+    await this.page.reload();
 });
 
 Then('devo ver uma mensagem de erro amigável', async function () {
