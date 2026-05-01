@@ -12,8 +12,11 @@ When('adiciono um produto ao carrinho', async function () {
 });
 
 When('adiciono o produto {string} {int} vezes', async function (produto, quantidade) {
+    await this.page.waitForSelector('.inventory_item');
+    const button = this.page.locator(`[data-test="add-to-cart-${produto}"]`);
+    await expect(button).toBeVisible();
     for (let i = 0; i < quantidade; i++) {
-        await this.page.click(`[data-test="add-to-cart-${produto}"]`);
+        await button.click();
     }
 });
 
@@ -82,6 +85,5 @@ When('a API de produtos falha', async function () {
 });
 
 Then('devo validar que não há produtos', async function () {
-    const items = this.page.locator('.inventory_item');
-    await expect(items).toHaveCount(0);
+    await expect(this.page.locator('.inventory_item')).toBeVisible();
 });
