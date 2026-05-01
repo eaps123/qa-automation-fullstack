@@ -24,10 +24,10 @@ jobs:
 
       - name: 🎭 Instalar browsers do Playwright
         run: npx playwright install --with-deps
-      - name: 📁 Criar pasta reports
-        run: mkdir -p reports
-      - name: 📁 Criar pastas de evidência
+
+      - name: 📁 Criar pastas de reports e evidências
         run: |
+          mkdir -p reports
           mkdir -p reports/screenshots
           mkdir -p reports/videos
 
@@ -52,7 +52,7 @@ jobs:
           curl -s https://dl.k6.io/key.gpg | sudo apt-key add -
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
           sudo apt-get update
-          sudo apt-get install k6
+          sudo apt-get install -y k6
           k6 run performance/load-test.js --summary-export=reports/k6-summary.json
 
       # =========================
@@ -63,38 +63,49 @@ jobs:
         run: npm run report
 
       # =========================
-      # ARTIFACTS
+      # DASHBOARD
       # =========================
       - name: 🧱 Criar dashboard index.html
         run: |
-          mkdir -p reports
           cat << 'EOF' > reports/index.html
           <!DOCTYPE html>
           <html>
-          <head><title>QA Automation</title></head>
+          <head>
+            <title>QA Automation</title>
+            <style>
+              body { font-family: Arial; background: #0f172a; color: #fff; padding: 20px; }
+              a { color: #38bdf8; display: block; margin: 8px 0; }
+            </style>
+          </head>
           <body>
             <h1>🚀 QA Automation Reports</h1>
-            <a href="./dashboard.html">📊 Dashboard</a><br>
-            <a href="./cucumber-report.html">🥒 Cucumber</a><br>
-            <a href="./playwright-report/index.html">🎭 Playwright</a><br>
-            <a href="./k6-summary.json">⚡ K6</a><br>
-            <a href="./videos/">🎥 Videos</a><br>
+            <a href="./dashboard.html">📊 Dashboard</a>
+            <a href="./cucumber-report.html">🥒 Cucumber</a>
+            <a href="./playwright-report/index.html">🎭 Playwright</a>
+            <a href="./k6-summary.json">⚡ K6</a>
+            <a href="./videos/">🎥 Videos</a>
             <a href="./screenshots/">📸 Screenshots</a>
           </body>
           </html>
           EOF
+
       - name: 📂 Debug reports
         run: |
           echo "Conteúdo da pasta reports:"
           ls -R reports
-      - name: 📁 Upload artifacts (all-in-one)
+
+      # =========================
+      # ARTIFACT
+      # =========================
+      - name: 📁 Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: qa-reports-${{ github.run_id }}
+          name: qa-reports
           path: |
             reports/
             test-results/
+
   # =========================
   # DEPLOY GH PAGES
   # =========================
@@ -107,22 +118,23 @@ jobs:
       contents: write
 
     steps:
-    - name: 📥 Checkout
-      uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-    - name: 📥 Download reports
-      uses: actions/download-artifact@v4
-      with:
-        name: reports
-        path: reports
+      - name: 📥 Download reports
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          name: qa-reports
+          path: reports
 
-    - name: 📂 Listar arquivos
-      run: ls -R reports
+      - name: 📂 Listar arquivos
+        run: ls -R reports
 
-    - name: 🚀 Deploy no GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: ./reports
-        force_orphan: false
+      - name: 🚀 Deploy no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./reports
+          force_orphan: false

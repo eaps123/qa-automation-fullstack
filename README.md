@@ -175,12 +175,6 @@ https://eaps123.github.io/qa-automation-fullstack/
 
 ---
 
-## 📸 Exemplo de execução
-
-![report](./reports/exemplo.png)
-
----
-
 ## 🧠 Boas práticas aplicadas
 
 * ✔️ Page Object Pattern
