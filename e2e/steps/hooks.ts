@@ -30,20 +30,27 @@ Before(async function () {
 });
 
 After(async function (scenario) {
+    const safeName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
+  
     try {
-        const safeName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_');
-
-        const screenshot = await this.page.screenshot({
-            path: `reports/screenshots/${safeName}.png`,
-            fullPage: true
-        });
-
-        this.attach(screenshot, 'image/png');
-
+      await fs.promises.mkdir('reports/screenshots', { recursive: true });
+      const screenshotPath = `reports/screenshots/${safeName}.png`;
+      await this.page.screenshot({
+        path: screenshotPath,
+        fullPage: true
+      });
+  
+      console.log('📸 Screenshot salvo em:', screenshotPath);
+  
     } catch (err) {
-        console.error(err);
-    } finally {
-        await this.context?.close();
-        await browser?.close();
+      console.error('Erro ao gerar screenshot:', err);
     }
-});
+    try {
+      await this.context?.close();
+      console.log('🎥 Context fechado (vídeo deve ser gerado)');
+    } catch (err) {
+      console.error('Erro ao fechar context:', err);
+    }
+
+    await browser?.close();
+  });

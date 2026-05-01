@@ -44,6 +44,13 @@ jobs:
       # =========================
       - name: 🧪 Rodar testes E2E
         run: npm run test:e2e
+      - name: 🔍 Debug evidências
+        run: |
+          echo "📁 Screenshots:"
+          ls -R reports/screenshots || true
+      
+          echo "📁 Videos:"
+          ls -R reports/videos || true
 
       # =========================
       # PERFORMANCE (K6)
