@@ -171,7 +171,8 @@ jobs:
                   <h3>🔗 Links</h3>
                   <a href="./cucumber-report.html">📊 Cucumber</a>
                   <a href="./k6-report.html">⚡ K6</a>
-                  <a href="./playwright-report/index.html">🎭 Playwright</a>
+                  <a href="./screenshots/index.html">📸 Screenshots</a>
+                  <a href="./videos/index.html">🎥 Videos</a>
               </div>
 
               <script>
