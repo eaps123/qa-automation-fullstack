@@ -61,6 +61,26 @@
             padding: 20px;
             border-radius: 10px;
         }
+
+        pre {
+            white-space: pre-wrap;
+            text-align: left;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 1200px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -141,7 +161,7 @@
         </div>
 
     </div>
-    
+
     <!-- API METRICS -->
     <div class="grid">
 
@@ -149,7 +169,7 @@
             <h2 id="apiTotal">-</h2>
             <p>API Tests</p>
         </div>
-        
+
         <div class="card">
             <h2 id="apiPassRate">-</h2>
             <p>API Pass Rate</p>
@@ -157,13 +177,42 @@
 
     </div>
 
+    <!-- PERFORMANCE ANALYSIS -->
+    <div class="full">
+
+        <h3>📈 Performance Analysis</h3>
+
+        <pre id="k6Analysis">
+Loading analysis...
+        </pre>
+
+    </div>
+
     <!-- LINKS -->
     <div class="full">
+
         <h3>🔗 Links</h3>
-        <a href="./cucumber-report.html">📊 Cucumber Report</a>
-        <a href="./k6-summary.json">⚡ K6 Report</a>
-        <a href="./videos/">🎥 Vídeos</a>
-        <a href="./screenshots/">📸 Screenshots</a>
+
+        <a href="./cucumber-report.html">
+            📊 Cucumber Report
+        </a>
+
+        <a href="./k6-summary.json">
+            ⚡ K6 Summary JSON
+        </a>
+
+        <a href="./k6-analysis.txt">
+            📈 K6 Analysis
+        </a>
+
+        <a href="./videos/">
+            🎥 Vídeos
+        </a>
+
+        <a href="./screenshots/">
+            📸 Screenshots
+        </a>
+
     </div>
 
     <script>
@@ -176,54 +225,90 @@
         // =========================
         async function loadCucumber() {
 
-            const res = await fetch('./cucumber-report.json');
-            const data = await res.json();
+            try {
 
-            let total = 0;
-            let passed = 0;
-            let failed = 0;
-            let durations = [];
-            let flaky = 0;
+                const res =
+                    await fetch('./cucumber-report.json');
 
-            data.forEach(feature => {
-                feature.elements.forEach(scenario => {
+                const data =
+                    await res.json();
 
-                    total++;
+                let total = 0;
+                let passed = 0;
+                let failed = 0;
+                let durations = [];
+                let flaky = 0;
 
-                    const steps = scenario.steps;
+                data.forEach(feature => {
 
-                    const isFailed = steps.some(s => s.result.status === 'failed');
+                    feature.elements.forEach(scenario => {
 
-                    const failedSteps = steps.filter(s => s.result.status === 'failed').length;
+                        total++;
 
-                    if (isFailed) failed++;
-                    else passed++;
+                        const steps =
+                            scenario.steps;
 
-                    if (failedSteps > 0 && failedSteps < steps.length) {
-                        flaky++;
-                    }
+                        const isFailed =
+                            steps.some(
+                                s => s.result.status === 'failed'
+                            );
 
-                    const duration = steps.reduce(
-                        (acc, s) => acc + (s.result.duration || 0),
-                        0
-                    );
+                        const failedSteps =
+                            steps.filter(
+                                s => s.result.status === 'failed'
+                            ).length;
 
-                    durations.push(duration);
+                        if (isFailed) {
+                            failed++;
+                        } else {
+                            passed++;
+                        }
+
+                        if (
+                            failedSteps > 0 &&
+                            failedSteps < steps.length
+                        ) {
+                            flaky++;
+                        }
+
+                        const duration =
+                            steps.reduce(
+                                (acc, s) =>
+                                    acc + (s.result.duration || 0),
+                                0
+                            );
+
+                        durations.push(duration);
+                    });
                 });
-            });
 
-            const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
+                const avg =
+                    durations.reduce((a, b) => a + b, 0)
+                    / durations.length;
 
-            document.getElementById('total').innerText = total;
-            document.getElementById('passed').innerText = passed;
-            document.getElementById('failed').innerText = failed;
-            document.getElementById('passRate').innerText =
-                ((passed / total) * 100).toFixed(1) + '%';
+                document.getElementById('total').innerText =
+                    total;
 
-            document.getElementById('avgDuration').innerText =
-                avg.toFixed(0);
+                document.getElementById('passed').innerText =
+                    passed;
 
-            document.getElementById('flaky').innerText = flaky;
+                document.getElementById('failed').innerText =
+                    failed;
+
+                document.getElementById('passRate').innerText =
+                    ((passed / total) * 100).toFixed(1) + '%';
+
+                document.getElementById('avgDuration').innerText =
+                    (avg / 1000000).toFixed(0) + ' ms';
+
+                document.getElementById('flaky').innerText =
+                    flaky;
+
+            } catch (e) {
+
+                console.log('Cucumber report não encontrado');
+
+            }
         }
 
         // =========================
@@ -232,12 +317,19 @@
         async function loadK6() {
 
             try {
+
                 const res = await fetch('./k6-summary.json');
+
                 const data = await res.json();
 
-                const p95 = data.metrics.http_req_duration.values["p(95)"];
-                const avg = data.metrics.http_req_duration.avg;
-                const failRate = data.metrics.http_req_failed.rate;
+                const avg =
+                    data.metrics.http_req_duration.values.avg;
+
+                const p95 =
+                    data.metrics.http_req_duration.values["p(95)"];
+
+                const failRate =
+                    data.metrics.http_req_failed.values.rate;
 
                 document.getElementById('k6Avg').innerText =
                     avg.toFixed(0) + ' ms';
@@ -255,25 +347,57 @@
                     generateInsight(p95, failRate);
 
             } catch (e) {
-                console.log('K6 não encontrado');
+
+                console.log('K6 não encontrado', e);
             }
         }
-
         // =========================
         // API
         // =========================
         async function loadApi() {
-            try {
-                const res = await fetch('./api-summary.json');
-                const data = await res.json();
 
-                document.getElementById('apiTotal').innerText = data.total;
+            try {
+
+                const res =
+                    await fetch('./api-summary.json');
+
+                const data =
+                    await res.json();
+
+                document.getElementById('apiTotal').innerText =
+                    data.total;
 
                 document.getElementById('apiPassRate').innerText =
                     ((data.passed / data.total) * 100).toFixed(1) + '%';
 
             } catch {
+
                 console.log('API report não encontrado');
+
+            }
+        }
+
+        // =========================
+        // K6 ANALYSIS
+        // =========================
+        async function loadK6Analysis() {
+
+            try {
+
+                const res =
+                    await fetch('./k6-analysis.txt');
+
+                const text =
+                    await res.text();
+
+                document.getElementById('k6Analysis')
+                    .innerText = text;
+
+            } catch {
+
+                document.getElementById('k6Analysis')
+                    .innerText =
+                    'Performance analysis not available.';
             }
         }
 
@@ -283,14 +407,14 @@
         function getK6Status(p95, errorRate) {
 
             if (p95 < 800 && errorRate < 0.01) {
-                return "🟢 HEALTHY";
+                return '🟢 HEALTHY';
             }
 
             if (p95 < 1200 && errorRate < 0.05) {
-                return "🟡 WARNING";
+                return '🟡 WARNING';
             }
 
-            return "🔴 CRITICAL";
+            return '🔴 CRITICAL';
         }
 
         // =========================
@@ -299,19 +423,21 @@
         function generateInsight(p95, errorRate) {
 
             if (p95 > 1000) {
-                return "⚠️ Alta latência detectada (possível gargalo no backend ou API externa)";
+                return '⚠️ Alta latência detectada';
             }
 
             if (errorRate > 0.02) {
-                return "⚠️ Taxa de erro elevada (instabilidade ou rate limit)";
+                return '⚠️ Taxa de erro elevada';
             }
 
-            return "✔ Performance dentro dos padrões esperados";
+            return '✔ Performance dentro do esperado';
         }
 
         loadCucumber();
         loadK6();
         loadApi();
+        loadK6Analysis();
+
     </script>
 
 </body>

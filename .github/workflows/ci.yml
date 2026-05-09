@@ -72,8 +72,11 @@ jobs:
             > reports/k6/k6-log.txt
 
       # =========================
-      # REPORTS - CUCUMBER
+      # REPORTS - CUCUMBER e API
       # =========================
+      - name: 📊 Gerar API Summary
+        if: always()
+        run: npm run report:api
       - name: 📊 Gerar relatório HTML
         if: always()
         run: npm run report
