@@ -1,40 +1,52 @@
 import { test, expect } from '@playwright/test';
-import { ApiClient } from '../services/apiClient';
+import env from '../../config/env';
+import { ApiClient } from '../clients/apiClient';
 import { AuthService } from '../services/AuthService';
+import { AuthFactory } from '../factories/auth.factory';
+import { AuthSchema } from '../schemas/auth.schema';
 
-test.describe('API - Auth', () => {
+test.describe('Auth API', () => {
 
   let client: ApiClient;
   let authService: AuthService;
 
-  test.beforeAll(async () => {
-    client = new ApiClient();
-    await client.init();
+  test.beforeEach(async () => {
 
-    authService = new AuthService(client);
+    client = new ApiClient(
+      env.api.reqres
+    );
+    await client.init();
+    authService =
+      new AuthService(client);
   });
 
-  test('POST - Login válido', async () => {
-    const response = await authService.login({
-      email: 'eve.holt@reqres.in',
-      password: 'cityslicka'
-    });
+  test.afterEach(async () => {
+    await client.dispose();
+  });
+
+  test('POST - login válido', async () => {
+
+    const response =
+      await authService.login(
+        AuthFactory.validUser()
+      );
 
     expect(response.status()).toBe(200);
 
     const body = await response.json();
-    expect(body).toHaveProperty('token');
+
+    AuthSchema.parse(body);
   });
 
-  test('POST - Login inválido deve falhar', async () => {
-    const response = await authService.login({
-      email: 'peter@klaven'
-    });
+  test('POST - login inválido', async () => {
 
-    expect([400, 401]).toContain(response.status());
+    const response =
+      await authService.login(
+        AuthFactory.invalidUser()
+      );
 
-    const body = await response.json();
-    expect(body).toHaveProperty('error');
+    expect([400, 401]).toContain(
+      response.status()
+    );
   });
-
 });

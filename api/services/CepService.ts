@@ -1,11 +1,15 @@
-import { ApiClient } from './apiClient';
-
-const BASE_URL = 'https://brasilapi.com.br/api';
+import env from '../../config/env';
+import { ApiClient } from '../clients/apiClient';
 
 export class CepService {
-  constructor(private client: ApiClient) {}
+  private client: ApiClient;
 
-  getCep(cep: string) {
-    return this.client.get(`${BASE_URL}/cep/v1/${cep}`);
+  constructor() {
+    this.client = new ApiClient(env.api.brasilApi);
+  }
+
+  async getCep(cep: string) {
+    await this.client.init();
+    return this.client.get(`/cep/v1/${cep}`);
   }
 }

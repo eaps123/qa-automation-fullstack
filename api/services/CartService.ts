@@ -1,19 +1,30 @@
-import { ApiClient } from './apiClient';
-
-const BASE_URL = 'https://fakestoreapi.com';
+import env from '../../config/env';
+import { ApiClient } from '../clients/apiClient';
 
 export class CartService {
-  constructor(private client: ApiClient) {}
+  private client: ApiClient;
 
-  createCart(payload: any) {
-    return this.client.post(`${BASE_URL}/carts`, payload);
+  constructor() {
+    this.client = new ApiClient(env.api.fakeStore);
   }
 
-  getCart(id: number) {
-    return this.client.get(`${BASE_URL}/carts/${id}`);
+  async createCart(payload: unknown) {
+    await this.client.init();
+    return this.client.post('/carts', payload);
   }
 
-  getAllCarts() {
-    return this.client.get(`${BASE_URL}/carts`);
+  async getCart(id: number) {
+    await this.client.init();
+    return this.client.get(`/carts/${id}`);
+  }
+
+  async updateCart(id: number, payload: unknown) {
+    await this.client.init();
+    return this.client.put(`/carts/${id}`, payload);
+  }
+
+  async deleteCart(id: number) {
+    await this.client.init();
+    return this.client.delete(`/carts/${id}`);
   }
 }

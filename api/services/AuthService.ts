@@ -1,11 +1,20 @@
-import { ApiClient } from './apiClient';
-
-const BASE_URL = 'https://reqres.in/api';
+import env from '../../config/env';
+import { ApiClient } from '../clients/apiClient';
 
 export class AuthService {
-  constructor(private client: ApiClient) {}
+  private client: ApiClient;
 
-  login(payload: any) {
-    return this.client.post(`${BASE_URL}/login`, payload);
+  constructor() {
+    this.client = new ApiClient(env.api.reqres);
+  }
+
+  async login(payload: unknown) {
+    await this.client.init();
+    return this.client.post('/login', payload);
+  }
+
+  async register(payload: unknown) {
+    await this.client.init();
+    return this.client.post('/register', payload);
   }
 }

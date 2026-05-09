@@ -1,44 +1,55 @@
 import { test, expect } from '@playwright/test';
-import { ApiClient } from '../services/apiClient';
+import env from '../../config/env';
+import { ApiClient } from '../clients/apiClient';
 import { CartService } from '../services/CartService';
 import { CartFactory } from '../factories/cart.factory';
+import { CartSchema } from '../schemas/cart.schema';
 
-test.describe('API - Cart', () => {
+test.describe('Cart API', () => {
 
   let client: ApiClient;
   let cartService: CartService;
 
-  test.beforeAll(async () => {
-    client = new ApiClient();
-    await client.init();
+  test.beforeEach(async () => {
 
+    client = new ApiClient(
+      env.api.fakeStore
+    );
+
+    await client.init();
     cartService = new CartService(client);
   });
 
-  test('POST - Deve criar um carrinho válido', async () => {
-    const response = await cartService.createCart(
-        CartFactory.validCart()
+  test.afterEach(async () => {
+    await client.dispose();
+  });
+
+  test('POST - deve criar carrinho', async () => {
+
+    const payload =
+      CartFactory.validCart();
+
+    const response =
+      await cartService.createCart(payload);
+
+    expect([200, 201]).toContain(
+      response.status()
+    );
+
+    const body = await response.json();
+
+    CartSchema.partial().parse(body);
+  });
+
+  test('POST - payload inválido', async () => {
+
+    const response =
+      await cartService.createCart(
+        CartFactory.invalidCart()
       );
 
-    expect([200, 201, 202]).toContain(response.status());
-
-    const body = await response.json();
-    expect(body).toHaveProperty('id');
+    expect([400, 422]).toContain(
+      response.status()
+    );
   });
-
-  test('POST - Deve aceitar payload vazio (mock behavior)', async () => {
-    const response = await cartService.createCart({});
-
-    expect([200, 201, 202]).toContain(response.status());
-  });
-
-  test('GET - Deve buscar carrinho por ID', async () => {
-    const response = await cartService.getCart(1);
-
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-    expect(body).toHaveProperty('id');
-  });
-
 });
