@@ -1,5 +1,5 @@
 interface LoginPayload {
-  email: string;
+  username: string;
   password?: string;
 }
 
@@ -9,28 +9,28 @@ export class AuthFactory {
     overrides?: Partial<LoginPayload>
   ): LoginPayload {
     return {
-      email: 'eve.holt@reqres.in',
-      password: 'cityslicka',
+      username: 'emilys',
+      password: 'emilyspass',
       ...overrides
     };
   }
 
   static invalidUser() {
     return {
-      email: 'invalid@email.com',
-      password: ''
+      username: 'invalid',
+      password: 'invalid'
     };
   }
 
   static userWithoutPassword() {
     return {
-      email: 'eve.holt@reqres.in'
+      username: 'kminchelle'
     };
   }
 
   static userWithoutEmail() {
     return {
-      password: '123456'
+      password: '0lelplR'
     };
   }
 }

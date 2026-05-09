@@ -42,7 +42,7 @@ export class ApiClient {
     data?: unknown
   ): Promise<APIResponse> {
     return this.context.post(endpoint, {
-      data
+      data: data
     });
   }
 
@@ -51,7 +51,7 @@ export class ApiClient {
     data?: unknown
   ): Promise<APIResponse> {
     return this.context.put(endpoint, {
-      data
+      data: data
     });
   }
 

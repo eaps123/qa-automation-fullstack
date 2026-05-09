@@ -1,8 +1,10 @@
 export default {
     api: {
-        reqres: 'https://reqres.in/api',
+        //reqres: 'https://reqres.in/api',
+        dummy: 'https://dummyjson.com',
         fakeStore: 'https://fakestoreapi.com',
-        brasilApi: 'https://brasilapi.com.br/api'
+        viacep: 'https://viacep.com.br/ws/'
+        //brasilApi: 'https://brasilapi.com.br/api'
     },
 
     web: {

@@ -19,7 +19,7 @@ test.describe('Products API', () => {
     await client.init();
 
     productService =
-      new ProductService(client);
+      new ProductService();
   });
 
   test.afterEach(async () => {

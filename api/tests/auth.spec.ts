@@ -13,11 +13,11 @@ test.describe('Auth API', () => {
   test.beforeEach(async () => {
 
     client = new ApiClient(
-      env.api.reqres
+      env.api.dummy
     );
     await client.init();
     authService =
-      new AuthService(client);
+      new AuthService();
   });
 
   test.afterEach(async () => {

@@ -5,11 +5,11 @@ export class CepService {
   private client: ApiClient;
 
   constructor() {
-    this.client = new ApiClient(env.api.brasilApi);
+    this.client = new ApiClient(env.api.viacep);
   }
 
   async getCep(cep: string) {
     await this.client.init();
-    return this.client.get(`/cep/v1/${cep}`);
+    return this.client.get(`${cep}/json/`);
   }
 }

@@ -1,53 +1,29 @@
 import { test, expect } from '@playwright/test';
-import env from '../../config/env';
-import { ApiClient } from '../clients/apiClient';
 import { CepService } from '../services/CepService';
+import { CepSchema } from '../schemas/cep.schema';
 
 test.describe('CEP API', () => {
 
-  let client: ApiClient;
-  let cepService: CepService;
+    let cepService: CepService;
 
-  test.beforeEach(async () => {
+    test.beforeEach(async () => {
+        cepService = new CepService();
+    });
 
-    client = new ApiClient(
-      env.api.brasilApi
-    );
+    test('GET - deve buscar CEP válido (contract test)', async () => {
 
-    await client.init();
+        const response = await cepService.getCep('01001000');
+        expect(response.status()).toBe(200);
+        const body = await response.json();
+        const parsed = CepSchema.safeParse(body);
+        expect(parsed.success).toBe(true);
+        if (!parsed.success) {
+            console.log(parsed.error.format());
+        }
+    });
 
-    cepService = new CepService(client);
-  });
-
-  test.afterEach(async () => {
-    await client.dispose();
-  });
-
-  test('GET - deve buscar CEP válido', async () => {
-
-    const response =
-      await cepService.getCep(
-        '01001000'
-      );
-
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(body).toHaveProperty('city');
-
-    expect(body).toHaveProperty('state');
-  });
-
-  test('GET - CEP inválido', async () => {
-
-    const response =
-      await cepService.getCep(
-        '00000000'
-      );
-
-    expect([400, 404]).toContain(
-      response.status()
-    );
-  });
+    test('GET - CEP inválido', async () => {
+        const response = await cepService.getCep('000000000');
+        expect([400, 404]).toContain(response.status());
+    });
 });
