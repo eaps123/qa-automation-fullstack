@@ -141,6 +141,21 @@
         </div>
 
     </div>
+    
+    <!-- API METRICS -->
+    <div class="grid">
+
+        <div class="card">
+            <h2 id="apiTotal">-</h2>
+            <p>API Tests</p>
+        </div>
+        
+        <div class="card">
+            <h2 id="apiPassRate">-</h2>
+            <p>API Pass Rate</p>
+        </div>
+
+    </div>
 
     <!-- LINKS -->
     <div class="full">
@@ -245,6 +260,24 @@
         }
 
         // =========================
+        // API
+        // =========================
+        async function loadApi() {
+            try {
+                const res = await fetch('./api-summary.json');
+                const data = await res.json();
+
+                document.getElementById('apiTotal').innerText = data.total;
+
+                document.getElementById('apiPassRate').innerText =
+                    ((data.passed / data.total) * 100).toFixed(1) + '%';
+
+            } catch {
+                console.log('API report não encontrado');
+            }
+        }
+
+        // =========================
         // HEALTH STATUS
         // =========================
         function getK6Status(p95, errorRate) {
@@ -278,7 +311,7 @@
 
         loadCucumber();
         loadK6();
-
+        loadApi();
     </script>
 
 </body>
