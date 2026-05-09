@@ -51,18 +51,22 @@ A estratégia adotada separa responsabilidades por tipo de teste:
 ```bash
 qa-automation-fullstack/
 ├── api/                  # Testes de API
+│   ├── clients/
 │   ├── factories/
+│   ├── schemas/
 │   ├── services/
 │   └── tests/
+│
+├── config/env            # .env (separação de ambiente)
 │
 ├── e2e/                  # Testes End-to-End (BDD)
 │   ├── features/
 │   ├── pages/
-│   ├── steps/
-│   └── support/
+│   └── steps/
 │
 ├── performance/          # Testes de carga (K6)
-│   └── load-test.js
+│   ├── load-test.js
+│   └── config/env
 │
 ├── reports/              # Relatórios gerados
 │   ├── screenshots/

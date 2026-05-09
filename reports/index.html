@@ -17,6 +17,12 @@
             text-align: center;
         }
 
+        .sub {
+            text-align: center;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -48,6 +54,13 @@
             display: block;
             margin-top: 10px;
         }
+
+        .full {
+            margin-top: 20px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -55,7 +68,19 @@
 
     <h1>📊 QA Automation Dashboard</h1>
 
+    <div class="sub">
+        Last Execution: <span id="timestamp"></span>
+    </div>
+
+    <!-- STATUS HEALTH -->
+    <div class="card">
+        <h2 id="status">-</h2>
+        <p>System Health (K6)</p>
+    </div>
+
+    <!-- CUCUMBER METRICS -->
     <div class="grid">
+
         <div class="card">
             <h2 id="total">-</h2>
             <p>Total Cenários</p>
@@ -77,11 +102,23 @@
         </div>
     </div>
 
+    <!-- CUCUMBER PERFORMANCE -->
     <div class="grid">
+
         <div class="card">
             <h2 id="avgDuration">-</h2>
             <p>Tempo Médio (ms)</p>
         </div>
+
+        <div class="card">
+            <h2 id="flaky">-</h2>
+            <p>Flaky Scenarios</p>
+        </div>
+
+    </div>
+
+    <!-- K6 METRICS -->
+    <div class="grid">
 
         <div class="card">
             <h2 id="k6Avg">-</h2>
@@ -97,18 +134,33 @@
             <h2 id="k6FailRate">-</h2>
             <p>K6 Fail Rate</p>
         </div>
+
+        <div class="card">
+            <h2 id="insight">-</h2>
+            <p>Insight Automático</p>
+        </div>
+
     </div>
 
-    <div class="card">
+    <!-- LINKS -->
+    <div class="full">
         <h3>🔗 Links</h3>
         <a href="./cucumber-report.html">📊 Cucumber Report</a>
         <a href="./k6-summary.json">⚡ K6 Report</a>
-        <a href="./videos/">Vídeos</a>
-        <a href="./screenshots/">Screenshots</a>
+        <a href="./videos/">🎥 Vídeos</a>
+        <a href="./screenshots/">📸 Screenshots</a>
     </div>
 
     <script>
+
+        document.getElementById('timestamp').innerText =
+            new Date().toLocaleString();
+
+        // =========================
+        // CUCUMBER
+        // =========================
         async function loadCucumber() {
+
             const res = await fetch('./cucumber-report.json');
             const data = await res.json();
 
@@ -116,18 +168,31 @@
             let passed = 0;
             let failed = 0;
             let durations = [];
+            let flaky = 0;
 
             data.forEach(feature => {
                 feature.elements.forEach(scenario => {
+
                     total++;
 
                     const steps = scenario.steps;
+
                     const isFailed = steps.some(s => s.result.status === 'failed');
+
+                    const failedSteps = steps.filter(s => s.result.status === 'failed').length;
 
                     if (isFailed) failed++;
                     else passed++;
 
-                    const duration = steps.reduce((acc, s) => acc + (s.result.duration || 0), 0);
+                    if (failedSteps > 0 && failedSteps < steps.length) {
+                        flaky++;
+                    }
+
+                    const duration = steps.reduce(
+                        (acc, s) => acc + (s.result.duration || 0),
+                        0
+                    );
+
                     durations.push(duration);
                 });
             });
@@ -137,32 +202,83 @@
             document.getElementById('total').innerText = total;
             document.getElementById('passed').innerText = passed;
             document.getElementById('failed').innerText = failed;
-            document.getElementById('passRate').innerText = ((passed / total) * 100).toFixed(1) + '%';
-            document.getElementById('avgDuration').innerText = avg.toFixed(0);
+            document.getElementById('passRate').innerText =
+                ((passed / total) * 100).toFixed(1) + '%';
+
+            document.getElementById('avgDuration').innerText =
+                avg.toFixed(0);
+
+            document.getElementById('flaky').innerText = flaky;
         }
 
+        // =========================
+        // K6
+        // =========================
         async function loadK6() {
+
             try {
                 const res = await fetch('./k6-summary.json');
                 const data = await res.json();
 
+                const p95 = data.metrics.http_req_duration.values["p(95)"];
+                const avg = data.metrics.http_req_duration.avg;
+                const failRate = data.metrics.http_req_failed.rate;
+
                 document.getElementById('k6Avg').innerText =
-                    data.metrics.http_req_duration.avg.toFixed(0) + ' ms';
+                    avg.toFixed(0) + ' ms';
 
                 document.getElementById('k6P95').innerText =
-                    data.metrics.http_req_duration.p(95).toFixed(0) + ' ms';
+                    p95.toFixed(0) + ' ms';
 
                 document.getElementById('k6FailRate').innerText =
-                    (data.metrics.http_req_failed.rate * 100).toFixed(2) + '%';
+                    (failRate * 100).toFixed(2) + '%';
 
-            } catch {
+                document.getElementById('status').innerText =
+                    getK6Status(p95, failRate);
+
+                document.getElementById('insight').innerText =
+                    generateInsight(p95, failRate);
+
+            } catch (e) {
                 console.log('K6 não encontrado');
             }
         }
-        fetch('./k6-summary.json').then(r => r.json()).then(data => console.log(data))
-        
+
+        // =========================
+        // HEALTH STATUS
+        // =========================
+        function getK6Status(p95, errorRate) {
+
+            if (p95 < 800 && errorRate < 0.01) {
+                return "🟢 HEALTHY";
+            }
+
+            if (p95 < 1200 && errorRate < 0.05) {
+                return "🟡 WARNING";
+            }
+
+            return "🔴 CRITICAL";
+        }
+
+        // =========================
+        // INSIGHT AUTOMÁTICO
+        // =========================
+        function generateInsight(p95, errorRate) {
+
+            if (p95 > 1000) {
+                return "⚠️ Alta latência detectada (possível gargalo no backend ou API externa)";
+            }
+
+            if (errorRate > 0.02) {
+                return "⚠️ Taxa de erro elevada (instabilidade ou rate limit)";
+            }
+
+            return "✔ Performance dentro dos padrões esperados";
+        }
+
         loadCucumber();
         loadK6();
+
     </script>
 
 </body>
