@@ -13,7 +13,7 @@ test.describe('Products API', () => {
   test.beforeEach(async () => {
 
     client = new ApiClient(
-      env.api.fakeStore
+      env.api.dummy
     );
 
     await client.init();
@@ -35,9 +35,8 @@ test.describe('Products API', () => {
 
     const body = await response.json();
 
-    expect(body.length).toBeGreaterThan(0);
-
-    ProductSchema.parse(body[0]);
+    expect(body.products.length).toBeGreaterThan(0);
+    ProductSchema.parse(body.products[0]);
   });
 
   test('POST - deve criar produto', async () => {

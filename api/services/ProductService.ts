@@ -5,7 +5,7 @@ export class ProductService {
   private client: ApiClient;
 
   constructor() {
-    this.client = new ApiClient(env.api.fakeStore);
+    this.client = new ApiClient(env.api.dummy);
   }
 
   async getProducts() {
@@ -20,7 +20,7 @@ export class ProductService {
 
   async createProduct(payload: unknown) {
     await this.client.init();
-    return this.client.post('/products', payload);
+    return this.client.post('/products/add', payload);
   }
 
   async updateProduct(id: number, payload: unknown) {

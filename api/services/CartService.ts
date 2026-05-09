@@ -5,12 +5,12 @@ export class CartService {
   private client: ApiClient;
 
   constructor() {
-    this.client = new ApiClient(env.api.fakeStore);
+    this.client = new ApiClient(env.api.dummy);
   }
 
   async createCart(payload: unknown) {
     await this.client.init();
-    return this.client.post('/carts', payload);
+    return this.client.post('/carts/add', payload);
   }
 
   async getCart(id: number) {

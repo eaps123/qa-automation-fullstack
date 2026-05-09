@@ -30,16 +30,16 @@ A estratégia adotada separa responsabilidades por tipo de teste:
 
 ### 🔹 APIs utilizadas
 
-* **Fake Store API**
-  Utilizada para cenários de **CRUD completo** (GET, POST, PUT, DELETE)
-
-* **ReqRes**
+* **dummy**
   Utilizada para:
 
+  * cenários de **CRUD completo** (GET, POST, PUT, DELETE)
   * autenticação
   * cenários negativos (ex: login inválido)
 
-* **BrasilAPI**
+  porém é uma mock API.
+
+* **viacep**
   Utilizada para:
 
   * validação de dados reais (ex: consulta de CEP)
@@ -66,7 +66,7 @@ qa-automation-fullstack/
 │
 ├── performance/          # Testes de carga (K6)
 │   ├── load-test.js
-│   └── config/env
+│   └── config.js
 │
 ├── reports/              # Relatórios gerados
 │   ├── screenshots/
@@ -247,8 +247,9 @@ O projeto foi estruturado com foco em:
 * simulação de cenário real de automação
 
 E o projeto utiliza a aplicação pública de testes:
-
 https://www.saucedemo.com/
+
+Após algumas analises, foi deixado de utilizar nos testes de API, fakestore, reqres e BrasilApi devido a instabilidades no uso, seja em pipelines com bloqueios de ip ou até em validações repetidas.
 
 ---
 ## Autor

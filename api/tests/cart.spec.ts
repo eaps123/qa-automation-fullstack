@@ -13,7 +13,7 @@ test.describe('Cart API', () => {
   test.beforeEach(async () => {
 
     client = new ApiClient(
-      env.api.fakeStore
+      env.api.dummy
     );
 
     await client.init();
@@ -41,13 +41,13 @@ test.describe('Cart API', () => {
     CartSchema.partial().parse(body);
   });
 
-  test('POST - API aceita payload inválido (mock limitation)', async () => {
+  test('POST - deve retornar erro para payload inválido', async () => {
 
     const response =
       await cartService.createCart(
         CartFactory.invalidCart()
       );
 
-    expect(response.status()).toBe(201);
+      expect(response.status()).toBe(400);
   });
 });
