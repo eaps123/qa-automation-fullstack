@@ -6,43 +6,63 @@
 
 # 🧪 QA Automation Challenge
 
-Projeto de automação de testes cobrindo **API, E2E e testes de carga**, com foco em boas práticas, organização e simulação de um ambiente real de QA.
+Projeto de automação de testes cobrindo **API, E2E e testes de performance**, utilizando boas práticas de arquitetura, organização e escalabilidade aplicadas em projetos enterprise de QA Automation.
 
 ---
 
 ## 📌 Objetivo
 
-Demonstrar habilidades em QA Automation com foco em:
+Demonstrar habilidades práticas em:
 
--   Testes E2E com Playwright + Cucumber
--   Testes de API
--   Testes de performance com K6
--   Integração contínua (GitHub Actions)
--   Geração de relatórios e evidências (screenshots e vídeos)
+- Testes E2E com Playwright + Cucumber
+- Testes de API REST
+- Testes de contrato com Zod
+- Testes de performance com K6
+- Integração contínua com GitHub Actions
+- Geração automática de evidências e relatórios
 
 ---
 
 ## 📖 Descrição
 
-Este projeto foi desenvolvido para validar diferentes camadas de uma aplicação, utilizando múltiplas APIs públicas para garantir **cobertura ampla e cenários realistas**.
+O projeto foi desenvolvido para validar diferentes camadas de uma aplicação utilizando APIs públicas e aplicação web real.
 
-A estratégia adotada separa responsabilidades por tipo de teste:
+A arquitetura foi organizada seguindo padrões enterprise de automação, separando responsabilidades em:
 
-### 🔹 APIs utilizadas
+- clients
+- services
+- factories
+- schemas
+- tests
 
-* **dummy**
-  Utilizada para:
+Além disso, foi implementada separação de ambientes (`dev`, `qa` e `prd`) para evitar hardcodes e facilitar manutenção futura.
 
-  * cenários de **CRUD completo** (GET, POST, PUT, DELETE)
-  * autenticação
-  * cenários negativos (ex: login inválido)
+---
 
-  porém é uma mock API.
+## 🔹 APIs utilizadas
 
-* **viacep**
-  Utilizada para:
+### dummyjson
 
-  * validação de dados reais (ex: consulta de CEP)
+Utilizada para:
+
+- autenticação
+- cenários de CRUD
+- testes positivos e negativos
+- simulação de API REST
+
+📍 https://dummyjson.com
+
+---
+
+### ViaCEP
+
+Utilizada para:
+
+- validação de dados reais
+- consulta de CEP
+- validação de contratos reais
+
+📍 https://viacep.com.br
 
 ---
 
@@ -50,46 +70,99 @@ A estratégia adotada separa responsabilidades por tipo de teste:
 
 ```bash
 qa-automation-fullstack/
-├── api/                  # Testes de API
+├── api/
 │   ├── clients/
+│   │   └── apiClient.ts
+│   │
 │   ├── factories/
+│   │   ├── auth.factory.ts
+│   │   ├── cart.factory.ts
+│   │   └── product.factory.ts
+│   │
 │   ├── schemas/
+│   │   ├── auth.schema.ts
+│   │   ├── cart.schema.ts
+│   │   └── product.schema.ts
+│   │
 │   ├── services/
+│   │   ├── AuthService.ts
+│   │   ├── CartService.ts
+│   │   ├── CepService.ts
+│   │   └── ProductService.ts
+│   │
 │   └── tests/
+│       ├── auth.spec.ts
+│       ├── cart.spec.ts
+│       ├── cep.spec.ts
+│       └── products.spec.ts
 │
-├── config/env            # .env (separação de ambiente)
+├── config/
+│   └── env/
+│       ├── dev.ts
+│       ├── qa.ts
+│       ├── prd.ts
+│       └── index.ts
 │
-├── e2e/                  # Testes End-to-End (BDD)
+├── e2e/
 │   ├── features/
 │   ├── pages/
 │   └── steps/
 │
-├── performance/          # Testes de carga (K6)
+├── performance/
 │   ├── load-test.js
 │   └── config.js
 │
-├── reports/              # Relatórios gerados
+├── reports/
 │   ├── screenshots/
 │   └── videos/
 │
-├── scripts/              # Script utilizados para o reports
+├── scripts/
 │
-├── .github/workflows/    # CI/CD (GitHub Actions)
+├── .github/workflows/
 │
 ├── package.json
 └── README.md
 ```
----
 
 ## 🧪 Cobertura de Testes
 
 ### 🔹 API
 
-* ✔️ Validação de status codes
-* ✔️ Validação de response body
-* ✔️ Cenários positivos e negativos
-* ✔️ Testes de autenticação
-* ✔️ Testes com dados reais
+#### Products
+
+- ✔️ GET produtos
+- ✔️ POST produto
+- ✔️ PUT produto
+- ✔️ DELETE produto
+
+#### Cart
+
+- ✔️ Criação de carrinho
+- ✔️ Atualização de carrinho
+- ✔️ Payload inválido
+
+#### Auth
+
+- ✔️ Login válido
+- ✔️ Login inválido
+- ✔️ Validação de autenticação
+
+#### CEP
+
+- ✔️ Consulta de CEP válido
+- ✔️ Consulta de CEP inválido
+- ✔️ Validação de dados reais
+
+---
+
+### 🔹 Testes de Contrato (Zod)
+
+Validação de contrato implementada utilizando **Zod Schemas** para garantir:
+
+- ✔️ Estrutura do response
+- ✔️ Tipagem dos dados
+- ✔️ Contrato esperado da API
+- ✔️ Proteção contra breaking changes
 
 ---
 
@@ -97,36 +170,38 @@ qa-automation-fullstack/
 
 #### 🔐 Login
 
-* ✔️ Login com sucesso
-* ✔️ Login inválido
-* ✔️ Login após logout
+- ✔️ Login com sucesso
+- ✔️ Login inválido
+- ✔️ Login após logout
 
 #### 🛒 Checkout
 
-* ✔️ Fluxo completo de compra
-* ✔️ Checkout com dados inválidos
-* ✔️ Usuário não logado acessando checkout
-* ✔️ Carrinho vazio
+- ✔️ Fluxo completo de compra
+- ✔️ Checkout com dados inválidos
+- ✔️ Usuário não logado acessando checkout
+- ✔️ Validação de carrinho
 
 ---
 
 ### 🔹 Performance (K6)
 
-* ✔️ Simulação de múltiplos usuários
-* ✔️ Teste de carga em API pública
-* ✔️ Identificação de comportamento sob estresse
+- ✔️ Simulação de múltiplos usuários
+- ✔️ Teste de carga em API pública
+- ✔️ Identificação de comportamento sob estresse
 
 ---
 
 ## ⚙️ Tecnologias Utilizadas
 
--   Node.js
--   TypeScript
--   Playwright
--   Cucumber (BDD)
--   K6 (Performance)
--   GitHub Actions (CI/CD)
--   Cucumber HTML Reporter
+- Node.js
+- TypeScript
+- Playwright
+- Cucumber
+- Zod
+- Faker
+- K6
+- GitHub Actions
+- Cucumber HTML Reporter
 
 ---
 
@@ -134,47 +209,52 @@ qa-automation-fullstack/
 
 ### 1. Clonar repositório
 
-git clone https://github.com/eaps123/qa-automation-fullstack cd
-qa-automation-fullstack
-
----
-
+```bash
+git clone https://github.com/eaps123/qa-automation-fullstack
+cd qa-automation-fullstack
+```
 ### 2. Instalar dependências
 
+```bash
 npm install
-
+```
 ---
 
 ### 3. Instalar browsers do Playwright
 
+```bash
 npx playwright install
-
+```
 ---
 
 ## 🧪 Execução dos testes
 
 ### ✔️ Testes E2E
 
+```bash
 npm run test:e2e
-
+```
 ---
 
 ### ✔️ Testes de API
 
+```bash
 npm run test:api
-
+```
 ---
 
 ### ✔️ Testes de Performance (K6)
 
+```bash
 npm run test:performance
-
+```
 ---
 
 ### ✔️ Gerar relatórios
 
+```bash
 npm run report
-
+```
 ---
 
 ## 📊 Relatórios e evidências
@@ -186,6 +266,7 @@ Após a execução, os relatórios são gerados em:
 Incluindo:
 
 -   📊 Cucumber report
+-   🔹 API report
 -   ⚡ K6 report
 -   📸 Screenshots automáticos por cenário
 -   🎥 Vídeos de execução
@@ -216,11 +297,15 @@ Pipeline automatizado com **GitHub Actions**, responsável por:
 
 ## 🎯 Diferenciais do projeto
 
--   🔁 Pipeline completo (E2E + API + Performance)
--   📊 Dashboard customizado com métricas
+-   🔁 Pipeline completo de QA
+-   🧪 Testes API + E2E + Performance
+-   📊 Testes de contrato com Zod
+-   🧱 Arquitetura enterprise
+-   📦 Separação de ambientes
 -   📸 Evidências automáticas (screenshots e vídeos)
--   🧪 BDD com Cucumber
--   ⚡ Testes de performance integrados
+-   🔍 Código tipado com TypeScript
+-   🥒 BDD com Cucumber
+-   🧩 Uso de factories para geração de massa dinâmica
 -   🚀 Deploy automático
 
 ---
@@ -229,8 +314,14 @@ Pipeline automatizado com **GitHub Actions**, responsável por:
 
 * ✔️ Page Object Pattern
 * ✔️ BDD com Cucumber
+* ✔️ Factory Pattern
+* ✔️ Service Layer Pattern
 * ✔️ Separação de camadas (API / E2E / Performance)
 * ✔️ Testes positivos e negativos
+* ✔️ Schema Validation
+* ✔️ Ambientes desacoplados
+* ✔️ Reutilização de client HTTP
+* ✔️ Código tipado
 * ✔️ Evidências automáticas (screenshots)
 * ✔️ Integração com CI/CD
 * ✔️ Código tipado com TypeScript
@@ -239,19 +330,30 @@ Pipeline automatizado com **GitHub Actions**, responsável por:
 
 ## 📌 Considerações
 
-O projeto foi estruturado com foco em:
+O projeto foi estruturado visando:
 
 * escalabilidade
-* legibilidade
 * organização
-* simulação de cenário real de automação
+* legibilidade
+* manutenção simplificada
+* arquitetura enterprise de QA
 
-E o projeto utiliza a aplicação pública de testes:
-https://www.saucedemo.com/
+A aplicação web utilizada para os cenários E2E foi:
 
-Após algumas analises, foi deixado de utilizar nos testes de API, fakestore, reqres e BrasilApi devido a instabilidades no uso, seja em pipelines com bloqueios de ip ou até em validações repetidas.
+* SauceDemo
+
+Durante evolução do projeto, algumas APIs públicas inicialmente utilizadas foram removidas devido a:
+
+* instabilidade
+* bloqueios em pipelines CI
+* limitação de uso
+* inconsistência de contratos
+
+O projeto foi consolidado utilizando APIs mais estáveis para garantir maior confiabilidade dos testes automatizados.
 
 ---
 ## Autor
 - Everton Alves Pedro
 - QA Engineer | Automação de Testes
+GitHub:
+* https://github.com/eaps123
