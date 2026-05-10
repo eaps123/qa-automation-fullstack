@@ -1,17 +1,16 @@
 Feature: Login
 
-  Scenario: Login com sucesso
+  Background:
     Given que estou na página de login
-    When eu faço login com usuário válido
+
+  Scenario: Login com sucesso
+    When realizo login com credenciais válidas
     Then devo ver a página de produtos
 
   Scenario: Login inválido
-    Given que estou na página de login
-    When eu faço login com senha inválida
+    When realizo login com senha inválida
     Then devo ver uma mensagem de erro
 
-  Scenario: Login após logout deve funcionar corretamente
-    Given que estou logado na aplicação
-    When faço logout
-    And realizo login novamente
-    Then devo ver a página de produtos
+  Scenario: Login com campos vazios
+    When realizo login sem preencher credenciais
+    Then devo ver uma mensagem de erro

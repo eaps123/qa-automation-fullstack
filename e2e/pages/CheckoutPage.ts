@@ -3,23 +3,23 @@ import { Page } from '@playwright/test';
 export class CheckoutPage {
   constructor(private page: Page) {}
 
-  private checkoutBtn = '#checkout';
-  private firstName = '#first-name';
-  private lastName = '#last-name';
-  private postalCode = '#postal-code';
-  private continueBtn = '#continue';
-  private finishBtn = '#finish';
-  private successMsg = '.complete-header';
-  private errorMsg = '[data-test="error"]';
+  private readonly checkoutBtn = '#checkout';
+  private readonly firstName = '#first-name';
+  private readonly lastName = '#last-name';
+  private readonly postalCode = '#postal-code';
+  private readonly continueBtn = '#continue';
+  private readonly finishBtn = '#finish';
+  private readonly successMsg = '.complete-header';
+  private readonly errorMsg = '[data-test="error"]';
 
   async startCheckout() {
     await this.page.click(this.checkoutBtn);
   }
 
-  async fillForm() {
-    await this.page.fill(this.firstName, 'Everton');
-    await this.page.fill(this.lastName, 'QA');
-    await this.page.fill(this.postalCode, '12345');
+  async fillForm(checkoutData) {
+    await this.page.fill(this.firstName, checkoutData.firstName);
+    await this.page.fill(this.lastName, checkoutData.lastName);
+    await this.page.fill(this.postalCode, checkoutData.postalCode);
   }
 
   async continue() {
@@ -30,11 +30,18 @@ export class CheckoutPage {
     await this.page.click(this.finishBtn);
   }
 
-  async getSuccessMessage() {
+  async finishCheckout(checkoutData) {
+    await this.startCheckout();
+    await this.fillForm(checkoutData);
+    await this.continue();
+    await this.finish();
+  }
+
+  getSuccessMessage() {
     return this.page.locator(this.successMsg);
   }
 
-  async getErrorMessage() {
+  getErrorMessage() {
     return this.page.locator(this.errorMsg);
   }
 }

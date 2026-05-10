@@ -1,74 +1,71 @@
-import { When, Then } from '@cucumber/cucumber';
-import { expect, Route } from '@playwright/test';
-import { CheckoutPage } from '../pages/CheckoutPage';
-import { InventoryPage } from '../pages/InventoryPage';
-
-let checkoutPage: CheckoutPage;
-let inventoryPage: InventoryPage;
+import { expect } from '@playwright/test';
+import { generateCheckoutData } from '../utils/faker';
+import environment from '../../config/env';
+import {
+    When,
+    Then
+} from '@cucumber/cucumber';
 
 When('adiciono um produto ao carrinho', async function () {
-    inventoryPage = new InventoryPage(this.page);
-    await inventoryPage.addProduct();
+    await this.inventoryPage.addProduct();
 });
 
 When('adiciono múltiplos produtos ao carrinho', async function () {
-    await this.page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
-    await this.page.click('[data-test="add-to-cart-sauce-labs-bike-light"]');
+    await this.inventoryPage.addMultipleProducts();
 });
 
 When('vou para o carrinho', async function () {
-    inventoryPage = new InventoryPage(this.page);
-    await inventoryPage.goToCart();
+    await this.inventoryPage.goToCart();
 });
 
 When('vou para o carrinho sem produtos', async function () {
-    inventoryPage = new InventoryPage(this.page);
-    await inventoryPage.goToCart();
+    await this.inventoryPage.goToCart();
 });
 
 When('finalizo a compra com dados válidos', async function () {
-    checkoutPage = new CheckoutPage(this.page);
-
-    await checkoutPage.startCheckout();
-    await checkoutPage.fillForm();
-    await checkoutPage.continue();
-    await checkoutPage.finish();
+    const checkoutData = generateCheckoutData();
+    await this.cartPage.startCheckout();
+    await this.checkoutPage.fillForm(checkoutData);
+    await this.checkoutPage.continue();
+    await this.checkoutPage.finish();
 });
 
 When('tento finalizar a compra', async function () {
-    checkoutPage = new CheckoutPage(this.page);
-
-    await checkoutPage.startCheckout();
-    await checkoutPage.continue();
+    await this.cartPage.startCheckout();
+    await this.checkoutPage.continue();
 });
 
 When('tento finalizar a compra sem preencher dados', async function () {
-    checkoutPage = new CheckoutPage(this.page);
-
-    await checkoutPage.startCheckout();
-    await checkoutPage.continue();
+    await this.cartPage.startCheckout();
+    await this.checkoutPage.continue();
 });
 
 When('tento acessar a página de checkout', async function () {
-    await this.page.goto('https://www.saucedemo.com/checkout-step-one.html');
+    await this.page.goto(
+        `${environment.web.saucedemo}/checkout-step-one.html`
+    );
 });
 
 Then('devo ver a confirmação de compra', async function () {
-    const success = await new CheckoutPage(this.page).getSuccessMessage();
-    await expect(success).toBeVisible();
+    await expect(
+        this.checkoutPage.getSuccessMessage()
+    ).toBeVisible();
 });
 
 Then('devo ver uma mensagem de erro no checkout', async function () {
-    const error = await new CheckoutPage(this.page).getErrorMessage();
-    await expect(error).toBeVisible();
+    await expect(
+        this.checkoutPage.getErrorMessage()
+    ).toBeVisible();
 });
 
 Then('devo ver uma mensagem de carrinho vazio', async function () {
-    const error = await new CheckoutPage(this.page).getErrorMessage();
-    await expect(error).toBeVisible();
+    await expect(
+        this.checkoutPage.getErrorMessage()
+    ).toBeVisible();
 });
 
 Then('o carrinho deve refletir a quantidade correta', async function () {
-    const badge = this.page.locator('.shopping_cart_badge');
-    await expect(badge).toHaveText('2');
+    await expect(
+        this.inventoryPage.getCartBadge()
+    ).toHaveText('2');
 });

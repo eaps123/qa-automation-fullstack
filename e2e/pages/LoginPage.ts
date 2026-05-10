@@ -1,26 +1,43 @@
 import { Page } from '@playwright/test';
+import environment from '../../config/env';
+import { users } from '../../config/data/users';
 
 export class LoginPage {
-    constructor(private page: Page) { }
+  constructor(private page: Page) {}
 
-    private readonly username = '#user-name';
-    private readonly password = '#password';
-    private readonly loginBtn = '#login-button';
-    private error = '[data-test="error"]';
+  private readonly usernameInput = '#user-name';
+  private readonly passwordInput = '#password';
+  private readonly loginBtn = '#login-button';
+  private readonly errorMessage = '[data-test="error"]';
 
-    async navigate() {
-        await this.page.goto('https://www.saucedemo.com/', {
-            waitUntil: 'domcontentloaded',
-            timeout: 60000
-        });
-    }
+  async navigate() {
+    await this.page.goto(environment.web.saucedemo, {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000
+    });
+  }
 
-    async login(user: string, pass: string) {
-        await this.page.fill(this.username, user);
-        await this.page.fill(this.password, pass);
-        await this.page.click(this.loginBtn);
-    }
-    getError() {
-        return this.page.locator('[data-test="error"]');
-    }
+  async login(username: string, password: string) {
+    await this.page.fill(this.usernameInput, username);
+    await this.page.fill(this.passwordInput, password);
+    await this.page.click(this.loginBtn);
+  }
+
+  async loginAsStandardUser() {
+    await this.login(
+      users.standard.username,
+      users.standard.password
+    );
+  }
+
+  async loginWithInvalidPassword() {
+    await this.login(
+      users.standard.username,
+      users.invalid.password
+    );
+  }
+
+  getError() {
+    return this.page.locator(this.errorMessage);
+  }
 }

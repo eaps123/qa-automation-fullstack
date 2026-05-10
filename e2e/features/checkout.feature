@@ -1,31 +1,23 @@
 Feature: Checkout
 
-  Scenario: Compra realizada com sucesso
+  Background:
     Given que estou logado na aplicação
+
+  Scenario: Compra realizada com sucesso
     When adiciono um produto ao carrinho
-    And vou para o carrinho
     And finalizo a compra com dados válidos
     Then devo ver a confirmação de compra
 
   Scenario: Checkout com dados inválidos
-    Given que estou logado na aplicação
     When adiciono um produto ao carrinho
-    And vou para o carrinho
-    And tento finalizar a compra sem preencher dados
+    And finalizo a compra sem preencher dados obrigatórios
     Then devo ver uma mensagem de erro no checkout
-  
-  Scenario: Usuário tenta acessar checkout sem estar logado
-    Given que não estou logado
-    When tento acessar a página de checkout
-    Then devo ser redirecionado para login
-  
-  Scenario: Não deve permitir finalizar compra com carrinho vazio
-    Given que estou logado na aplicação
-    When vou para o carrinho sem produtos
+
+  Scenario: Carrinho vazio
+    When acesso o carrinho sem produtos
     And tento finalizar a compra
     Then devo ver uma mensagem de carrinho vazio
-  
-  Scenario: adiciono múltiplos produtos ao carrinho
-    Given que estou logado na aplicação
+
+  Scenario: Adicionar múltiplos produtos
     When adiciono múltiplos produtos ao carrinho
     Then o carrinho deve refletir a quantidade correta

@@ -97,16 +97,33 @@ qa-automation-fullstack/
 │       └── products.spec.ts
 │
 ├── config/
-│   └── env/
-│       ├── dev.ts
-│       ├── qa.ts
-│       ├── prd.ts
-│       └── index.ts
+│   ├── env/
+│   │   ├── dev.ts
+│   │   ├── qa.ts
+│   │   ├── prd.ts
+│   │   └── index.ts
+│   └── data/
+│       ├── users.ts
+│       └── checkout.ts
 │
 ├── e2e/
 │   ├── features/
+│   │   ├── checkout.feature
+│   │   └── login.feature
 │   ├── pages/
-│   └── steps/
+│   │   ├── CartPage.ts
+│   │   ├── CheckoutPage.ts
+│   │   ├── InventoryPage.ts
+│   │   └── LoginPage.ts
+│   ├── steps/
+│   │   ├── checkout.steps.ts
+│   │   └── login.steps.ts
+│   ├── support/
+│   │   ├── hooks.ts
+│   │   └── world.ts
+│   └── utils/
+│       ├── faker.ts
+│       └── helpers.ts
 │
 ├── performance/
 │   ├── load-test.js
@@ -114,9 +131,12 @@ qa-automation-fullstack/
 │
 ├── reports/
 │   ├── screenshots/
-│   └── videos/
+│   ├── videos/
+│   └── index.html
 │
 ├── scripts/
+│   ├── generate-api-summary.js
+│   └── generate-report.js
 │
 ├── .github/workflows/
 │

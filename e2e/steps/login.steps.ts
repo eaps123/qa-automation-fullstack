@@ -1,61 +1,55 @@
-import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { InventoryPage } from '../pages/InventoryPage';
-import { CheckoutPage } from '../pages/CheckoutPage';
-
-let loginPage: LoginPage;
-let inventoryPage: InventoryPage;
-let checkoutPage: CheckoutPage;
+import {
+  Given,
+  When,
+  Then
+} from '@cucumber/cucumber';
 
 Given('que estou na página de login', async function () {
-  loginPage = new LoginPage(this.page);
-  await loginPage.navigate();
+  await this.loginPage.navigate();
 });
 
 When('eu faço login com usuário válido', async function () {
-  await loginPage.login('standard_user', 'secret_sauce');
+  await this.loginPage.loginAsStandardUser();
 });
 
 When('eu faço login com senha inválida', async function () {
-  await loginPage.login('standard_user', 'wrong_password');
+  await this.loginPage.loginWithInvalidPassword();
 });
 
 Then('devo ver a página de produtos', async function () {
-  await expect(this.page).toHaveURL(/inventory/);
+  await expect(this.page)
+    .toHaveURL(/inventory/);
 });
 
 Then('devo ver uma mensagem de erro', async function () {
-  const error = loginPage.getError();
-  await error.waitFor();
-  expect(await error.isVisible()).toBe(true);
+  await expect(
+    this.loginPage.getError()
+  ).toBeVisible();
 });
 
 Given('que estou logado na aplicação', async function () {
-  loginPage = new LoginPage(this.page);
-  await loginPage.navigate();
-  await loginPage.login('standard_user', 'secret_sauce');
-  await expect(this.page).toHaveURL(/inventory/);
-  await this.page.waitForSelector('.inventory_item');
-
-  inventoryPage = new InventoryPage(this.page);
-  checkoutPage = new CheckoutPage(this.page);
+  await this.loginPage.navigate();
+  await this.loginPage.loginAsStandardUser();
+  await expect(this.page)
+    .toHaveURL(/inventory/);
 });
 
 Given('que não estou logado', async function () {
-  loginPage = new LoginPage(this.page);
-  await loginPage.navigate();
+  await this.loginPage.navigate();
 });
 
 When('faço logout', async function () {
-  await inventoryPage.openMenu();
-  await inventoryPage.logout();
+  await this.inventoryPage.openMenu();
+  await this.inventoryPage.logout();
 });
 
 When('realizo login novamente', async function () {
-  await loginPage.login('standard_user', 'secret_sauce');
+  await this.loginPage.loginAsStandardUser();
 });
 
 Then('devo ser redirecionado para login', async function () {
-  await expect(this.page.locator('[data-test="login-button"]')).toBeVisible();
+  await expect(
+    this.page.locator('[data-test="login-button"]')
+  ).toBeVisible();
 });
