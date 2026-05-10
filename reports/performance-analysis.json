@@ -1,0 +1,9 @@
+{
+    "status": "WARNING",
+    "analysis": [
+        "Latência P95 acima de 800ms durante pico de carga",
+        "Taxa de erro detectada acima do threshold esperado",
+        "Possível gargalo em endpoints de escrita (POST/PUT)",
+        "API apresentou estabilidade parcial sob 500 VUs"
+    ]
+}

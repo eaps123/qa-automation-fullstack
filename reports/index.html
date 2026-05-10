@@ -209,13 +209,11 @@
 
     <!-- PERFORMANCE ANALYSIS -->
     <div class="full">
-
         <h3>📈 Performance Analysis</h3>
 
-        <pre id="k6Analysis">
-Loading analysis...
-        </pre>
-
+        <div id="performanceAnalysis">
+            Carregando análise...
+        </div>
     </div>
 
     <!-- LINKS -->
@@ -231,8 +229,8 @@ Loading analysis...
             ⚡ K6 Summary JSON
         </a>
 
-        <a href="./k6-analysis.txt">
-            📈 K6 Analysis
+        <a href="./performance-analysis.json">
+            ⚡ K6 performance JSON
         </a>
 
         <a href="./videos/">
@@ -342,6 +340,32 @@ Loading analysis...
         }
 
         // =========================
+        // API
+        // =========================
+        async function loadApi() {
+
+            try {
+
+                const res =
+                    await fetch('./api-summary.json');
+
+                const data =
+                    await res.json();
+
+                document.getElementById('apiTotal').innerText =
+                    data.total;
+
+                document.getElementById('apiPassRate').innerText =
+                    ((data.passed / data.total) * 100).toFixed(1) + '%';
+
+            } catch {
+
+                console.log('API report não encontrado');
+
+            }
+        }
+
+        // =========================
         // K6
         // =========================
         async function loadK6() {
@@ -382,53 +406,36 @@ Loading analysis...
                 console.log('K6 não encontrado', e);
             }
         }
+
         // =========================
-        // API
+        // PERFORMANCE ANALYSIS
         // =========================
-        async function loadApi() {
+        async function loadPerformanceAnalysis() {
 
             try {
 
-                const res =
-                    await fetch('./api-summary.json');
+                const res = await fetch('./performance-analysis.json');
+                const data = await res.json();
 
-                const data =
-                    await res.json();
+                let html = `
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <ul>
+                `;
 
-                document.getElementById('apiTotal').innerText =
-                    data.total;
+                data.analysis.forEach(item => {
+                    html += `<li>${item}</li>`;
+                });
 
-                document.getElementById('apiPassRate').innerText =
-                    ((data.passed / data.total) * 100).toFixed(1) + '%';
+                html += '</ul>';
 
-            } catch {
+                document.getElementById('performanceAnalysis').innerHTML = html;
 
-                console.log('API report não encontrado');
+            } catch (e) {
 
-            }
-        }
+                document.getElementById('performanceAnalysis').innerHTML =
+                    'Análise de performance não encontrada';
 
-        // =========================
-        // K6 ANALYSIS
-        // =========================
-        async function loadK6Analysis() {
-
-            try {
-
-                const res =
-                    await fetch('./k6-analysis.txt');
-
-                const text =
-                    await res.text();
-
-                document.getElementById('k6Analysis')
-                    .innerText = text;
-
-            } catch {
-
-                document.getElementById('k6Analysis')
-                    .innerText =
-                    'Performance analysis not available.';
+                console.log(e);
             }
         }
 
@@ -516,9 +523,9 @@ Loading analysis...
         }
 
         loadCucumber();
-        loadK6();
         loadApi();
-        loadK6Analysis();
+        loadK6();
+        loadPerformanceAnalysis();
 
     </script>
 
