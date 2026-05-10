@@ -61,6 +61,7 @@ jobs:
       # PERFORMANCE (K6)
       # =========================
       - name: 🚀 Run K6 tests
+        continue-on-error: true
         run: |
           curl -s https://dl.k6.io/key.gpg | sudo apt-key add -
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
@@ -68,8 +69,8 @@ jobs:
           sudo apt-get install -y k6
 
           k6 run performance/load-test.js \
-            --summary-export=reports/k6/k6-summary.json \
-            > reports/k6/k6-log.txt
+            --summary-export=reports/k6-summary.json \
+            > reports/k6-log.txt
 
       # =========================
       # REPORTS - CUCUMBER e API

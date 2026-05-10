@@ -70,6 +70,27 @@
             color: #cbd5e1;
         }
 
+        .threshold-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin-top: 10px;
+            background: #0f172a;
+            border-radius: 8px;
+        }
+
+        .pass {
+            color: #22c55e;
+        }
+
+        .warning {
+            color: #eab308;
+        }
+
+        .fail {
+            color: #ef4444;
+        }
+
         @media (max-width: 1200px) {
             .grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -159,6 +180,15 @@
             <h2 id="insight">-</h2>
             <p>Insight Automático</p>
         </div>
+
+    </div>
+
+    <!-- THRESHOLDS -->
+    <div class="full">
+
+        <h3>⚡ Threshold Status</h3>
+
+        <div id="thresholds"></div>
 
     </div>
 
@@ -345,6 +375,7 @@ Loading analysis...
 
                 document.getElementById('insight').innerText =
                     generateInsight(p95, failRate);
+                renderThresholds(p95, failRate, avg);
 
             } catch (e) {
 
@@ -431,6 +462,57 @@ Loading analysis...
             }
 
             return '✔ Performance dentro do esperado';
+        }
+        function renderThresholds(p95, failRate, avg) {
+            const thresholds = [
+                {
+                    name: 'P95 Response Time',
+                    value: `${p95.toFixed(0)} ms`,
+                    status: p95 < 800
+                        ? 'PASS'
+                        : p95 < 1200
+                            ? 'WARNING'
+                            : 'FAIL'
+                },
+                {
+                    name: 'Error Rate',
+                    value: `${(failRate * 100).toFixed(2)}%`,
+                    status: failRate < 0.01
+                        ? 'PASS'
+                        : failRate < 0.05
+                            ? 'WARNING'
+                            : 'FAIL'
+                },
+                {
+                    name: 'Average Response',
+                    value: `${avg.toFixed(0)} ms`,
+                    status: avg < 500
+                        ? 'PASS'
+                        : avg < 1000
+                            ? 'WARNING'
+                            : 'FAIL'
+                }
+            ];
+            const container =
+                document.getElementById('thresholds');
+            container.innerHTML = '';
+            thresholds.forEach(t => {
+                let className = 'pass';
+                if (t.status === 'WARNING') {
+                    className = 'warning';
+                }
+                if (t.status === 'FAIL') {
+                    className = 'fail';
+                }
+                container.innerHTML += `
+                    <div class="threshold-item">
+                        <span>${t.name}</span>
+                        <span class="${className}">
+                            ${t.status} (${t.value})
+                        </span>
+                    </div>
+                `;
+            });
         }
 
         loadCucumber();

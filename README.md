@@ -189,6 +189,9 @@ Validação de contrato implementada utilizando **Zod Schemas** para garantir:
 - ✔️ Teste de carga em API pública
 - ✔️ Identificação de comportamento sob estresse
 
+- **Obs:**
+Durante o teste de carga com 500 VUs simultâneos por 5 minutos, foram observadas degradações progressivas na taxa de sucesso e aumento da latência P95. Como a API utilizada é pública/mock, foram identificados indícios de rate limiting e instabilidade sob alta concorrência, caracterizando um possível gargalo externo da aplicação.
+
 ---
 
 ## ⚙️ Tecnologias Utilizadas
