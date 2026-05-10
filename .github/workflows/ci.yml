@@ -69,8 +69,8 @@ jobs:
           sudo apt-get install -y k6
 
           k6 run performance/load-test.js \
-            --summary-export=reports/k6-summary.json \
-            > reports/k6-log.txt
+            --summary-export=reports/k6/k6-summary.json \
+            > reports/k6/k6-log.txt
 
       # =========================
       # REPORTS - CUCUMBER e API
