@@ -18,7 +18,7 @@ When('vou para o carrinho', async function () {
     await this.inventoryPage.goToCart();
 });
 
-When('vou para o carrinho sem produtos', async function () {
+When('acesso o carrinho sem produtos', async function () {
     await this.inventoryPage.goToCart();
 });
 
@@ -35,7 +35,7 @@ When('tento finalizar a compra', async function () {
     await this.checkoutPage.continue();
 });
 
-When('tento finalizar a compra sem preencher dados', async function () {
+When('finalizo a compra sem preencher dados obrigatórios', async function () {
     await this.cartPage.startCheckout();
     await this.checkoutPage.continue();
 });

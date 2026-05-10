@@ -5,11 +5,13 @@ Feature: Checkout
 
   Scenario: Compra realizada com sucesso
     When adiciono um produto ao carrinho
+    And vou para o carrinho
     And finalizo a compra com dados válidos
     Then devo ver a confirmação de compra
 
   Scenario: Checkout com dados inválidos
     When adiciono um produto ao carrinho
+    And vou para o carrinho
     And finalizo a compra sem preencher dados obrigatórios
     Then devo ver uma mensagem de erro no checkout
 

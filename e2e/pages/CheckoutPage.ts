@@ -1,25 +1,56 @@
-import { Page } from '@playwright/test';
+/* Responsável por:
+- formulário checkout
+- continuar fluxo
+- finalizar
+- mensagens */
+import { Page, Locator } from '@playwright/test';
+
+type CheckoutData = {
+  firstName: string;
+  lastName: string;
+  postalCode: string;
+};
 
 export class CheckoutPage {
   constructor(private page: Page) {}
+  private readonly firstName =
+    '#first-name';
 
-  private readonly checkoutBtn = '#checkout';
-  private readonly firstName = '#first-name';
-  private readonly lastName = '#last-name';
-  private readonly postalCode = '#postal-code';
-  private readonly continueBtn = '#continue';
-  private readonly finishBtn = '#finish';
-  private readonly successMsg = '.complete-header';
-  private readonly errorMsg = '[data-test="error"]';
+  private readonly lastName =
+    '#last-name';
 
-  async startCheckout() {
-    await this.page.click(this.checkoutBtn);
-  }
+  private readonly postalCode =
+    '#postal-code';
 
-  async fillForm(checkoutData) {
-    await this.page.fill(this.firstName, checkoutData.firstName);
-    await this.page.fill(this.lastName, checkoutData.lastName);
-    await this.page.fill(this.postalCode, checkoutData.postalCode);
+  private readonly continueBtn =
+    '#continue';
+
+  private readonly finishBtn =
+    '#finish';
+
+  private readonly successMsg =
+    '.complete-header';
+
+  private readonly errorMsg =
+    '[data-test="error"]';
+
+  async fillForm(
+    checkoutData: CheckoutData
+  ) {
+    await this.page.fill(
+      this.firstName,
+      checkoutData.firstName
+    );
+
+    await this.page.fill(
+      this.lastName,
+      checkoutData.lastName
+    );
+
+    await this.page.fill(
+      this.postalCode,
+      checkoutData.postalCode
+    );
   }
 
   async continue() {
@@ -30,18 +61,11 @@ export class CheckoutPage {
     await this.page.click(this.finishBtn);
   }
 
-  async finishCheckout(checkoutData) {
-    await this.startCheckout();
-    await this.fillForm(checkoutData);
-    await this.continue();
-    await this.finish();
-  }
-
-  getSuccessMessage() {
+  getSuccessMessage(): Locator {
     return this.page.locator(this.successMsg);
   }
 
-  getErrorMessage() {
+  getErrorMessage(): Locator {
     return this.page.locator(this.errorMsg);
   }
 }

@@ -1,13 +1,15 @@
 import {
   Before,
   After,
-  setDefaultTimeout
+  setDefaultTimeout,
 } from '@cucumber/cucumber';
 import {
   chromium,
+  firefox,
+  webkit,
   Browser,
   BrowserContext,
-  Page
+  Page,
 } from '@playwright/test';
 import fs from 'fs';
 import { CustomWorld } from './world';
@@ -16,26 +18,44 @@ import { InventoryPage } from '../pages/InventoryPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
 import { CartPage } from '../pages/CartPage';
 
-let browser: Browser;
-let context: BrowserContext;
-let page: Page;
-
 setDefaultTimeout(60 * 1000);
 
+const browserTypes = {
+  chromium,
+  firefox,
+  webkit,
+};
+
 Before(async function (this: CustomWorld) {
-  browser = await chromium.launch({
-    headless: process.env.CI ? true : false
+  const browserName =
+    (process.env.BROWSER || 'chromium') as keyof typeof browserTypes;
+  const browserLauncher = browserTypes[browserName];
+
+  if (!browserLauncher) {
+    throw new Error(
+      `Browser inválido: ${browserName}. Use chromium, firefox ou webkit.`
+    );
+  }
+
+  this.browser = await browserLauncher.launch({
+    headless: !!process.env.CI,
   });
-  context = await browser.newContext({
+
+  const context: BrowserContext = await this.browser.newContext({
+    viewport: {
+      width: 1280,
+      height: 720,
+    },
     recordVideo: {
       dir: 'reports/videos/',
       size: {
         width: 1280,
-        height: 720
-      }
-    }
+        height: 720,
+      },
+    },
   });
-  page = await context.newPage();
+
+  const page: Page = await context.newPage();
   this.page = page;
   this.context = context;
   this.loginPage = new LoginPage(page);
@@ -43,47 +63,50 @@ Before(async function (this: CustomWorld) {
   this.checkoutPage = new CheckoutPage(page);
   this.cartPage = new CartPage(page);
   fs.mkdirSync('reports/screenshots', {
-    recursive: true
+    recursive: true,
   });
   fs.mkdirSync('reports/videos', {
-    recursive: true
+    recursive: true,
   });
+  console.log(`🌐 Browser iniciado: ${browserName}`);
 });
 
 After(async function (
   this: CustomWorld,
   scenario
 ) {
-  const safeName = scenario.pickle.name
-    .replace(/[^a-zA-Z0-9]/g, '_');
-  const scenarioStatus =
-    scenario.result?.status || 'UNKNOWN';
-
+  const safeName = scenario.pickle.name.replace(
+    /[^a-zA-Z0-9]/g,
+    '_'
+  );
+  const screenshotPath =
+    `reports/screenshots/${safeName}.png`;
   try {
     await this.page.screenshot({
-      path:
-        `reports/screenshots/${safeName}-${scenarioStatus}.png`,
-      fullPage: true
+      path: screenshotPath,
+      fullPage: true,
     });
     console.log(
-      `📸 Screenshot salvo: ${safeName}-${scenarioStatus}`
+      `📸 Screenshot salvo: ${screenshotPath}`
     );
 
-  } catch (err) {
+  } catch (error) {
     console.error(
       'Erro ao gerar screenshot:',
-      err
+      error
     );
   }
 
   try {
-    await this.context?.close();
-    console.log('🎥 Vídeo gerado');
-  } catch (err) {
+    await this.context.close();
+    await this.browser.close();
+    console.log(
+      '🎥 Context fechado e vídeo salvo'
+    );
+  } catch (error) {
     console.error(
-      'Erro ao fechar contexto:',
-      err
+      'Erro ao fechar context:',
+      error
     );
   }
-  await browser?.close();
 });
