@@ -1,9 +1,13 @@
-reporter: [
-  ['html', {
-    outputFolder: 'reports/playwright-report',
-    open: 'never'
-  }],
-  ['json', {
-    outputFile: 'reports/playwright-report.json'
-  }]
-]
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  reporter: [
+    ['html', {
+      outputFolder: 'reports/playwright-report',
+      open: 'never'
+    }],
+    ['json', {
+      outputFile: 'reports/playwright-report.json'
+    }]
+  ]
+});
