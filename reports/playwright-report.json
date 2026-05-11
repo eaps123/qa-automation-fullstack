@@ -90,12 +90,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 519,
+                      "duration": 262,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:50.509Z",
+                      "startTime": "2026-05-11T01:51:34.021Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -105,7 +105,7 @@
               ],
               "id": "287d8470e65397163cb5-3f2c0a3855fa0282a29c",
               "file": "api/tests/auth.spec.ts",
-              "line": 27,
+              "line": 25,
               "column": 7
             },
             {
@@ -124,12 +124,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 203,
+                      "duration": 201,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:51.051Z",
+                      "startTime": "2026-05-11T01:51:34.310Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -139,7 +139,7 @@
               ],
               "id": "287d8470e65397163cb5-d3496d3fc6718ac479b0",
               "file": "api/tests/auth.spec.ts",
-              "line": 41,
+              "line": 39,
               "column": 7
             }
           ]
@@ -175,12 +175,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 302,
+                      "duration": 234,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:50.691Z",
+                      "startTime": "2026-05-11T01:51:34.205Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -190,7 +190,7 @@
               ],
               "id": "2cbb4897d66a8d58d5c5-cd2717c3cbec3fe90af1",
               "file": "api/tests/cart.spec.ts",
-              "line": 27,
+              "line": 24,
               "column": 7
             },
             {
@@ -209,12 +209,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 163,
+                      "duration": 168,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:51.013Z",
+                      "startTime": "2026-05-11T01:51:34.457Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -224,7 +224,7 @@
               ],
               "id": "2cbb4897d66a8d58d5c5-18c85ce0a3871fd05ff4",
               "file": "api/tests/cart.spec.ts",
-              "line": 44,
+              "line": 40,
               "column": 7
             }
           ]
@@ -241,7 +241,7 @@
         {
           "title": "CEP API",
           "file": "api/tests/cep.spec.ts",
-          "line": 5,
+          "line": 6,
           "column": 6,
           "specs": [
             {
@@ -260,12 +260,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 432,
+                      "duration": 423,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:50.508Z",
+                      "startTime": "2026-05-11T01:51:34.027Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -275,7 +275,7 @@
               ],
               "id": "1e4345db3709e51b2c7d-172aadc1f0a660c5c511",
               "file": "api/tests/cep.spec.ts",
-              "line": 13,
+              "line": 12,
               "column": 9
             },
             {
@@ -294,12 +294,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 137,
+                      "duration": 138,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:50.961Z",
+                      "startTime": "2026-05-11T01:51:34.473Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -309,7 +309,7 @@
               ],
               "id": "1e4345db3709e51b2c7d-bceb8780b475af1b52bd",
               "file": "api/tests/cep.spec.ts",
-              "line": 25,
+              "line": 28,
               "column": 9
             }
           ]
@@ -345,12 +345,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 729,
+                      "duration": 76,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:50.712Z",
+                      "startTime": "2026-05-11T01:51:34.206Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -360,7 +360,7 @@
               ],
               "id": "8e4b01250cf48ba6e50e-454c17ab1b0e3968078d",
               "file": "api/tests/products.spec.ts",
-              "line": 29,
+              "line": 24,
               "column": 7
             },
             {
@@ -379,12 +379,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 638,
+                      "duration": 171,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:51.461Z",
+                      "startTime": "2026-05-11T01:51:34.301Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -394,7 +394,7 @@
               ],
               "id": "8e4b01250cf48ba6e50e-b4acc9abc50f6f3db522",
               "file": "api/tests/products.spec.ts",
-              "line": 42,
+              "line": 40,
               "column": 7
             },
             {
@@ -413,12 +413,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 629,
+                      "duration": 174,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:52.108Z",
+                      "startTime": "2026-05-11T01:51:34.484Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -428,7 +428,7 @@
               ],
               "id": "8e4b01250cf48ba6e50e-b5e77e0ff16736eaa05d",
               "file": "api/tests/products.spec.ts",
-              "line": 61,
+              "line": 56,
               "column": 7
             },
             {
@@ -447,12 +447,12 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 635,
+                      "duration": 164,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-05-11T00:49:52.748Z",
+                      "startTime": "2026-05-11T01:51:34.669Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -462,7 +462,41 @@
               ],
               "id": "8e4b01250cf48ba6e50e-54799e4576af8ca05edc",
               "file": "api/tests/products.spec.ts",
-              "line": 85,
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "POST - deve validar payload inválido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 167,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T01:51:34.842Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-04a0adfed3ae66d0fcb2",
+              "file": "api/tests/products.spec.ts",
+              "line": 95,
               "column": 7
             }
           ]
@@ -472,9 +506,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-11T00:49:49.573Z",
-    "duration": 3844.1949999999997,
-    "expected": 10,
+    "startTime": "2026-05-11T01:51:33.076Z",
+    "duration": 1967.3319999999999,
+    "expected": 11,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

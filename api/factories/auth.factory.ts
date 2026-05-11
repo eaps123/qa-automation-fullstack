@@ -28,7 +28,7 @@ export class AuthFactory {
     };
   }
 
-  static userWithoutEmail() {
+  static userWithoutUsername() {
     return {
       password: '0lelplR'
     };

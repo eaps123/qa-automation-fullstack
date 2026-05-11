@@ -11,4 +11,5 @@ export const CepSchema = z.object({
   gia: z.string().optional(),
   ddd: z.string().optional(),
   siafi: z.string().optional(),
+  erro: z.boolean().optional()
 });

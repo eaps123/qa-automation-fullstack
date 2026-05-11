@@ -10,7 +10,6 @@ export class AuthService {
 
   async login(payload: unknown) {
     await this.client.init();
-    //return this.client.post('/login', payload);
     return this.client.post('/auth/login', payload);
   }
 

@@ -136,12 +136,14 @@ qa-automation-fullstack/
 │   └── config.js
 │
 ├── reports/
+│   ├── playwright-report/
 │   ├── screenshots/
 │   ├── videos/
 │   └── index.html
 │
 ├── scripts/
 │   ├── generate-api-summary.js
+│   ├── generate-performance-analysis.js
 │   └── generate-report.js
 │
 ├── .github/workflows/ci.yml

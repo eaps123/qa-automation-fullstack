@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const CartProductSchema = z.object({
-  productId: z.number(),
-  quantity: z.number()
+  productId: z.number().positive(),
+  quantity: z.number().positive()
 });
 
 export const CartSchema = z.object({
