@@ -73,11 +73,16 @@ jobs:
             > reports/k6/k6-log.txt
 
       # =========================
-      # REPORTS - CUCUMBER e API
+      # REPORTS - CUCUMBER e API e PERFORMANCE ANALYSIS
       # =========================
       - name: 📊 Gerar API Summary
         if: always()
         run: npm run report:api
+
+      - name: 📈 Gerar análise de performance
+        if: always()
+        run: npm run report:performance
+
       - name: 📊 Gerar relatório HTML
         if: always()
         run: npm run report
@@ -133,6 +138,7 @@ jobs:
           cp -r reports/videos public/
           cp -r reports/k6 public/
           cp reports/k6/k6-summary.json public/
+          cp reports/performance-analysis.json public/
 
       # =========================
       # DEBUG FINAL

@@ -1,9 +1,16 @@
 {
+    "generatedAt": "2026-05-10T23:41:12.000Z",
     "status": "WARNING",
+    "metrics": {
+        "avg": 642.18,
+        "p95": 987.44,
+        "failRate": 0.012,
+        "vus": 500
+    },
     "analysis": [
-        "Latência P95 acima de 800ms durante pico de carga",
-        "Taxa de erro detectada acima do threshold esperado",
-        "Possível gargalo em endpoints de escrita (POST/PUT)",
-        "API apresentou estabilidade parcial sob 500 VUs"
+        "Latência P95 elevada (987ms)",
+        "Taxa de erro moderada (1.20%)",
+        "Tempo médio acima do esperado (642ms)",
+        "Teste executado com pico de 500 usuários virtuais"
     ]
 }

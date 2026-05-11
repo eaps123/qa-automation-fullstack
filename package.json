@@ -9,6 +9,7 @@
     "test:e2e": "cucumber-js e2e/features --require-module ts-node/register --require e2e/support/**/*.ts --require e2e/steps/**/*.ts --format json:reports/cucumber-report.json",
     "report": "node scripts/generate-report.js",
     "report:api": "node scripts/generate-api-summary.js",
+    "report:performance": "node scripts/generate-performance-analysis.js",
     "test:full": "npm run test:api && npm run test:e2e && npm run report",
     "test:performance": "k6 run performance/load-test.js"
   },

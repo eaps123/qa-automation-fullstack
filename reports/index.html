@@ -414,6 +414,27 @@
 
                 let html = `
                     <p><strong>Status:</strong> ${data.status}</p>
+
+                    <p>
+                    <strong>P95:</strong>
+                    ${data.metrics.p95.toFixed(0)} ms
+                    </p>
+
+                    <p>
+                    <strong>Avg:</strong>
+                    ${data.metrics.avg.toFixed(0)} ms
+                    </p>
+
+                    <p>
+                    <strong>Error Rate:</strong>
+                    ${(data.metrics.failRate * 100).toFixed(2)}%
+                    </p>
+
+                    <p>
+                    <strong>VUs:</strong>
+                    ${data.metrics.vus}
+                    </p>
+
                     <ul>
                 `;
 
