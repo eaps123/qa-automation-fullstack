@@ -3,8 +3,8 @@
 - continuar fluxo
 - finalizar
 - mensagens */
-import { Page, Locator } from '@playwright/test';
 
+import { Page, Locator } from '@playwright/test';
 type CheckoutData = {
   firstName: string;
   lastName: string;
@@ -13,6 +13,9 @@ type CheckoutData = {
 
 export class CheckoutPage {
   constructor(private page: Page) {}
+
+  // SELECTORS
+
   private readonly firstName =
     '#first-name';
 
@@ -34,9 +37,9 @@ export class CheckoutPage {
   private readonly errorMsg =
     '[data-test="error"]';
 
-  async fillForm(
-    checkoutData: CheckoutData
-  ) {
+  // ACTIONS
+
+  async fillForm(checkoutData: CheckoutData) {
     await this.page.fill(
       this.firstName,
       checkoutData.firstName
@@ -54,18 +57,37 @@ export class CheckoutPage {
   }
 
   async continue() {
-    await this.page.click(this.continueBtn);
+    await this.page.click(
+      this.continueBtn
+    );
   }
 
   async finish() {
-    await this.page.click(this.finishBtn);
+    await this.page.click(
+      this.finishBtn
+    );
   }
 
+  async startCheckoutFlow(
+    checkoutData: CheckoutData
+  ) {
+    await this.fillForm(
+      checkoutData
+    );
+    await this.continue();
+  }
+
+  // LOCATORS
+
   getSuccessMessage(): Locator {
-    return this.page.locator(this.successMsg);
+    return this.page.locator(
+      this.successMsg
+    );
   }
 
   getErrorMessage(): Locator {
-    return this.page.locator(this.errorMsg);
+    return this.page.locator(
+      this.errorMsg
+    );
   }
 }

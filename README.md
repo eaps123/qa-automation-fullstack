@@ -8,6 +8,8 @@
 
 Projeto de automação de testes cobrindo **API, E2E e testes de performance**, utilizando boas práticas de arquitetura, organização e escalabilidade aplicadas em projetos enterprise de QA Automation.
 
+> Projeto atualizado com refatorações recentes focadas em escalabilidade, redução de duplicação e aumento de reutilização em testes E2E com Cucumber + Playwright.
+
 ---
 
 ## 📌 Objetivo
@@ -109,6 +111,9 @@ qa-automation-fullstack/
 │       └── index.ts
 │
 ├── e2e/
+│   ├── factories/
+│   │   └── checkout.factory.ts
+│   │ 
 │   ├── features/
 │   │   ├── checkout.feature
 │   │   └── login.feature
@@ -195,20 +200,27 @@ Validação de contrato implementada utilizando **Zod Schemas** para garantir:
 
 ---
 
-### 🔹 E2E (BDD com Cucumber)
+### 🔹 E2E (BDD com Cucumber + Page Objects + Factories)
+
+Framework de automação estruturado com:
+
+- Cucumber (BDD)
+- Playwright
+- Page Object Model
+- Factories para geração de massa de teste
+- Steps reutilizáveis e parametrizados
+- Validações dinâmicas de UI
 
 #### 🔐 Login
-
-- ✔️ Login com sucesso
-- ✔️ Login inválido
-- ✔️ Login após logout
+- Login com múltiplos perfis de usuário (dinâmico via step parameter)
+- Login inválido (senha, usuário inexistente e campos vazios)
+- Logout e reautenticação
 
 #### 🛒 Checkout
-
-- ✔️ Fluxo completo de compra
-- ✔️ Checkout com dados inválidos
-- ✔️ Usuário não logado acessando checkout
-- ✔️ Validação de carrinho
+- Fluxo completo de compra com dados gerados via Factory
+- Validação de erros de formulário
+- Validação de carrinho vazio
+- Suporte a múltiplos produtos dinamicamente
 
 ---
 
@@ -357,6 +369,15 @@ Pipeline automatizado com **GitHub Actions**, responsável por:
 * ✔️ Evidências automáticas (screenshots)
 * ✔️ Integração com CI/CD
 * ✔️ Código tipado com TypeScript
+
+## 🧩 Melhorias recentes aplicadas
+
+- Refatoração de steps Cucumber para suporte a parâmetros dinâmicos
+- Implementação de Factory Pattern no E2E (CheckoutFactory)
+- Remoção parcial de hardcode em Page Objects (IDs dinâmicos)
+- Centralização de dados de teste em config/data
+- Separação de ambientes (dev/qa/prd) via config/env
+- Criação de helpers reutilizáveis para infraestrutura de testes
 
 ---
 

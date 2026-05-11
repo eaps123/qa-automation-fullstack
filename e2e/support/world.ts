@@ -7,13 +7,13 @@ import {
     BrowserContext,
     Page,
   } from '@playwright/test';
-  import { LoginPage } from '../pages/LoginPage';
-  import { InventoryPage } from '../pages/InventoryPage';
-  import { CheckoutPage } from '../pages/CheckoutPage';
-  import { CartPage } from '../pages/CartPage';
+  import { LoginPage } from '../pages/login.page';
+  import { InventoryPage } from '../pages/inventory.page';
+  import { CheckoutPage } from '../pages/checkout.page';
+  import { CartPage } from '../pages/cart.page';
   
   export class CustomWorld extends World {
-    browser!: Browser;
+    browser?: Browser;
     context!: BrowserContext;
     page!: Page;
     loginPage!: LoginPage;

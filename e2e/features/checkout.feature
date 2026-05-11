@@ -2,13 +2,15 @@ Feature: Checkout
 
   Background:
     Given que estou logado na aplicação
-
+  
+  @smoke
   Scenario: Compra realizada com sucesso
     When adiciono um produto ao carrinho
     And vou para o carrinho
     And finalizo a compra com dados válidos
     Then devo ver a confirmação de compra
 
+  @negative
   Scenario: Checkout com dados inválidos
     When adiciono um produto ao carrinho
     And vou para o carrinho
@@ -22,4 +24,4 @@ Feature: Checkout
 
   Scenario: Adicionar múltiplos produtos
     When adiciono múltiplos produtos ao carrinho
-    Then o carrinho deve refletir a quantidade correta
+    Then o carrinho deve refletir "2" produtos
