@@ -82,6 +82,7 @@ qa-automation-fullstack/
 │   ├── schemas/
 │   │   ├── auth.schema.ts
 │   │   ├── cart.schema.ts
+│   │   ├── cep.schema.ts
 │   │   └── product.schema.ts
 │   │
 │   ├── services/
@@ -97,30 +98,35 @@ qa-automation-fullstack/
 │       └── products.spec.ts
 │
 ├── config/
-│   ├── env/
-│   │   ├── dev.ts
-│   │   ├── qa.ts
-│   │   ├── prd.ts
-│   │   └── index.ts
-│   └── data/
-│       ├── users.ts
-│       └── checkout.ts
+│   ├── data/
+│   │   ├── checkout.ts
+│   │   └── users.ts
+│   │ 
+│   └── env/
+│       ├── dev.ts
+│       ├── qa.ts
+│       ├── prd.ts
+│       └── index.ts
 │
 ├── e2e/
 │   ├── features/
 │   │   ├── checkout.feature
 │   │   └── login.feature
+│   │ 
 │   ├── pages/
 │   │   ├── CartPage.ts
 │   │   ├── CheckoutPage.ts
 │   │   ├── InventoryPage.ts
 │   │   └── LoginPage.ts
+│   │ 
 │   ├── steps/
 │   │   ├── checkout.steps.ts
 │   │   └── login.steps.ts
+│   │ 
 │   ├── support/
 │   │   ├── hooks.ts
 │   │   └── world.ts
+│   │ 
 │   └── utils/
 │       ├── faker.ts
 │       └── helpers.ts
@@ -138,9 +144,10 @@ qa-automation-fullstack/
 │   ├── generate-api-summary.js
 │   └── generate-report.js
 │
-├── .github/workflows/
+├── .github/workflows/ci.yml
 │
 ├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
