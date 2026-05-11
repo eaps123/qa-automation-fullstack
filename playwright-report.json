@@ -1,0 +1,560 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/qa-automation-fullstack/qa-automation-fullstack/playwright.config.ts",
+    "rootDir": "/home/runner/work/qa-automation-fullstack/qa-automation-fullstack",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/eaps123/qa-automation-fullstack/commit/442fd87586d8d5be20a062469ff04a5c1c682c1f",
+        "commitHash": "442fd87586d8d5be20a062469ff04a5c1c682c1f",
+        "buildHref": "https://github.com/eaps123/qa-automation-fullstack/actions/runs/25648770385"
+      },
+      "gitCommit": {
+        "shortHash": "442fd87",
+        "hash": "442fd87586d8d5be20a062469ff04a5c1c682c1f",
+        "subject": "fix: ajustes finais",
+        "body": "fix: ajustes finais\n",
+        "author": {
+          "name": "Everton",
+          "email": "everton04112@gmail.com",
+          "time": 1778470181000
+        },
+        "committer": {
+          "name": "Everton",
+          "email": "everton04112@gmail.com",
+          "time": 1778470181000
+        },
+        "branch": "main"
+      },
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/qa-automation-fullstack/qa-automation-fullstack/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/eaps123/qa-automation-fullstack/commit/442fd87586d8d5be20a062469ff04a5c1c682c1f",
+            "commitHash": "442fd87586d8d5be20a062469ff04a5c1c682c1f",
+            "buildHref": "https://github.com/eaps123/qa-automation-fullstack/actions/runs/25648770385"
+          },
+          "gitCommit": {
+            "shortHash": "442fd87",
+            "hash": "442fd87586d8d5be20a062469ff04a5c1c682c1f",
+            "subject": "fix: ajustes finais",
+            "body": "fix: ajustes finais\n",
+            "author": {
+              "name": "Everton",
+              "email": "everton04112@gmail.com",
+              "time": 1778470181000
+            },
+            "committer": {
+              "name": "Everton",
+              "email": "everton04112@gmail.com",
+              "time": 1778470181000
+            },
+            "branch": "main"
+          },
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/home/runner/work/qa-automation-fullstack/qa-automation-fullstack",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "reports/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "api/tests/auth.spec.ts",
+      "file": "api/tests/auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Auth API",
+          "file": "api/tests/auth.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "POST - login válido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 638,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:58.837Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287d8470e65397163cb5-3f2c0a3855fa0282a29c",
+              "file": "api/tests/auth.spec.ts",
+              "line": 25,
+              "column": 7
+            },
+            {
+              "title": "POST - login inválido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 179,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:59.513Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287d8470e65397163cb5-d3496d3fc6718ac479b0",
+              "file": "api/tests/auth.spec.ts",
+              "line": 39,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "api/tests/cart.spec.ts",
+      "file": "api/tests/cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cart API",
+          "file": "api/tests/cart.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "POST - deve criar carrinho",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 521,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:58.993Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2cbb4897d66a8d58d5c5-cd2717c3cbec3fe90af1",
+              "file": "api/tests/cart.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "POST - deve retornar erro para payload inválido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 134,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:59.547Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2cbb4897d66a8d58d5c5-18c85ce0a3871fd05ff4",
+              "file": "api/tests/cart.spec.ts",
+              "line": 40,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "api/tests/cep.spec.ts",
+      "file": "api/tests/cep.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "CEP API",
+          "file": "api/tests/cep.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GET - deve buscar CEP válido (contract test)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 681,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:59.710Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1e4345db3709e51b2c7d-172aadc1f0a660c5c511",
+              "file": "api/tests/cep.spec.ts",
+              "line": 12,
+              "column": 9
+            },
+            {
+              "title": "GET - CEP inválido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 19,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:31:00.415Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1e4345db3709e51b2c7d-bceb8780b475af1b52bd",
+              "file": "api/tests/cep.spec.ts",
+              "line": 28,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "api/tests/products.spec.ts",
+      "file": "api/tests/products.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Products API",
+          "file": "api/tests/products.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GET - deve listar produtos",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 25,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:59.857Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-454c17ab1b0e3968078d",
+              "file": "api/tests/products.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "POST - deve criar produto",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 133,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:30:59.900Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-b4acc9abc50f6f3db522",
+              "file": "api/tests/products.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "PUT - deve atualizar produto",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:31:00.050Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-b5e77e0ff16736eaa05d",
+              "file": "api/tests/products.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "DELETE - deve remover produto",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 130,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:31:00.547Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-54799e4576af8ca05edc",
+              "file": "api/tests/products.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "POST - deve validar payload inválido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 128,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-11T03:31:00.691Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8e4b01250cf48ba6e50e-04a0adfed3ae66d0fcb2",
+              "file": "api/tests/products.spec.ts",
+              "line": 95,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-11T03:30:57.757Z",
+    "duration": 3095.206,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
